@@ -1,8 +1,11 @@
-import 'Reviewer.dart';
-import 'Organisation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Reviewer.dart';
+
+
 
 class Review {
-  int reviewId;
+  String reviewId;
   bool approval;
   DateTime date;
   String comment;
@@ -10,6 +13,11 @@ class Review {
   Organisation organisation;
 
   Review(this.reviewId, this.approval, this.date, this.comment, this.reviewer, this.organisation);
+
+  factory Review.fromFirestore(DocumentSnapshot snapshot,){
+      final data = snapshot.data() as Map<String, dynamic>;
+      return Review(snapshot.id, data['approval'], data['date'], data['comment'], data['reviewer'], data['organisation']);
+  }
 
   void setApproval(bool approval) { /*...*/ }
   bool getApproval() { /*...*/ return approval; }
