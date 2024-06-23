@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'Interaction.dart';
 import 'Organisation.dart';
 import 'Donor.dart';
@@ -7,8 +9,14 @@ class Appointment extends Interaction {
   bool approvalStatus;
   String reason;
 
-  Appointment(int id, Organisation org, Donor donor, DateTime date, this.approvalDate, this.approvalStatus, this.reason)
-      : super(id, org, donor, date);
+  Appointment(super.id, super.org, super.donor, this.approvalDate, this.approvalStatus, this.reason);
+
+  factory Appointment.fromFirestore(DocumentSnapshot snapshot,){
+    final data = snapshot.data() as Map<String, dynamic>;
+    Appointment app = Appointment(snapshot.id, data['org'], data['donor'], data['approvalDate'], data['approvalStatus'], data['reason']);
+    app.setDate(data['date']);
+    return app;
+  }
 
   void setReason(String reason) { /*...*/ }
   String getReason() { /*...*/ return reason; }
