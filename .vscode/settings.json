@@ -1,9 +1,14 @@
 {
     "cSpell.words": [
+        "Admincontroller",
+        "Donorcontroller",
         "donorlink",
         "Financials",
         "Organisation",
         "Organisations",
+        "Orgcontroller",
+        "orgid",
+        "Revcontroller",
         "Splashscreen"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
