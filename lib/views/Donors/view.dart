@@ -25,7 +25,7 @@ class View extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 3,
+                itemCount: elements.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(

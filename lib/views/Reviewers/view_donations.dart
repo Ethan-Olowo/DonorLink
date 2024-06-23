@@ -1,13 +1,12 @@
-// view_financials.dart
-import 'package:donorlink/views/Donors/financial_document.dart';
+// view_donations.dart
 import 'package:flutter/material.dart';
 
-class ViewFinancials extends StatelessWidget {
+class ViewDonations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Financials'),
+        title: Text('View Donations'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -15,7 +14,7 @@ class ViewFinancials extends StatelessWidget {
           children: [
             TextField(
               decoration: InputDecoration(
-                labelText: 'Search Financials',
+                labelText: 'Search Donations',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
@@ -25,9 +24,10 @@ class ViewFinancials extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text('Financial Info'),
+                      title: Text('Organisation name'),
+                      subtitle: Text('Donation Amount\nDate\nTransaction ID'),
                       onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FinancialDocument()));
+                        Navigator.pushNamed(context, '/view_donation');
                       },
                     ),
                   );
