@@ -1,21 +1,26 @@
-// view_financials.dart
-import 'package:donorlink/views/Donors/financial_document.dart';
+// home_page.dart
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:flutter/material.dart';
 
-class ViewFinancials extends StatelessWidget {
+class HomePage extends StatelessWidget {
+  final Reviewer user;
+  const HomePage({super.key, required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Financials'),
+        title: const Text('Home Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
+            const Text('Pending Organisations'),
+            const SizedBox(height: 20),
+            const TextField(
               decoration: InputDecoration(
-                labelText: 'Search Financials',
+                labelText: 'Search Organisations',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
@@ -25,9 +30,10 @@ class ViewFinancials extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text('Financial Info'),
+                      title: Text('Organisation Name'),
+                      subtitle: Text('Location\nCharity Type\nRating'),
                       onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FinancialDocument()));
+                        Navigator.pushNamed(context, '/view_organisation');
                       },
                     ),
                   );

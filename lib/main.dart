@@ -1,8 +1,14 @@
+import 'package:donorlink/firebase_options.dart';
 import 'package:donorlink/views/Splashscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+ await Firebase.initializeApp(
+   options: DefaultFirebaseOptions.currentPlatform,
+ );
   runApp(const MyApp());
 }
 
@@ -24,12 +30,14 @@ class MyApp extends StatelessWidget {
       
       //Add Text Theme 
 
-      home:  MyAppHome(),
+      home:  const MyAppHome(),
       );
   }
 }
       
 class MyAppHome extends StatelessWidget {
+  const MyAppHome({super.key});
+
 
         @override
         Widget build(BuildContext context) {
@@ -53,7 +61,7 @@ class MyAppHome extends StatelessWidget {
                     width: 100,
                     child: FloatingActionButton(
                       onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Splashscreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Splashscreen()));
                       },
                     tooltip: 'Go To Select User',
                     child: const Text('Proceed'),

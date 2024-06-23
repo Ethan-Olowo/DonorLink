@@ -1,7 +1,12 @@
 // donation_receipt.dart
+import 'package:donorlink/Models/User.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DonationReceipt extends StatelessWidget {
+  final User user;
+  const DonationReceipt({super.key, required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +34,7 @@ class DonationReceipt extends StatelessWidget {
               Text('Transaction ID: ABC12345'),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
                 },
                 child: Text('Home'),
               ),

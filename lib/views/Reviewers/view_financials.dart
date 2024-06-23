@@ -1,5 +1,4 @@
 // view_financials.dart
-import 'package:donorlink/views/Donors/financial_document.dart';
 import 'package:flutter/material.dart';
 
 class ViewFinancials extends StatelessWidget {
@@ -27,7 +26,7 @@ class ViewFinancials extends StatelessWidget {
                     child: ListTile(
                       title: Text('Financial Info'),
                       onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FinancialDocument()));
+                        Navigator.pushNamed(context, '/view_financial');
                       },
                     ),
                   );

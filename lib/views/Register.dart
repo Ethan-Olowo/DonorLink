@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatelessWidget {
@@ -10,7 +11,7 @@ class Register extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text('$userType Registration'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -22,35 +23,52 @@ class Register extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
+              const Image(
                 image: AssetImage('assets/images/Logo.png')
               ),
-              SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 20),
+              const TextField(
                 decoration: InputDecoration(labelText: 'Name'),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: 'Email'),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: 'Phone'),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
               ),
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future createAccount(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        return('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
