@@ -1,9 +1,10 @@
 // donor_account.dart
-import 'package:donorlink/Models/User.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DonorAccount extends StatelessWidget {
-  final User? user;
+  final Donor? user;
   const DonorAccount({super.key, required this.user});
 
   @override
@@ -29,7 +30,8 @@ class DonorAccount extends StatelessWidget {
                 child: const Text('Edit'),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
                   Navigator.popUntil(context, ModalRoute.withName('/'));
                 },
                 child: const Text('Log Out'),
