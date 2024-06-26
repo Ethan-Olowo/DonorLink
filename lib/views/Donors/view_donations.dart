@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/views/Donors/view_donation.dart';
 import 'package:flutter/material.dart';
 
 class ViewDonations extends StatefulWidget {
@@ -66,10 +67,10 @@ class _PageState extends State<ViewDonations> {
                           subtitle: Text(
                               'Donation Date: ${donations[index].date}\nAmount: ${donations[index].donationAmount}'),
                           onTap: () {
-                            /*Navigator.push(
+                            Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewAppointments(user: widget.user,),),
-                            );*/
+                              MaterialPageRoute(builder: (context) => ViewDonation(user: widget.user, don: donations[index],),),
+                            );
                           },
                         ),
                       );
