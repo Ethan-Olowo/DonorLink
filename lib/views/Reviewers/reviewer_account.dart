@@ -26,12 +26,11 @@ class ReviewerAccount extends StatelessWidget {
             const SizedBox(height: 20),
 
             //Edit this to check if approval is pending 
-            reviewer.approval
-                ? ElevatedButton(
+            if (reviewer.approval == 'requested') ElevatedButton(
                     onPressed: () {},
                     child: const Text('Cancel Request'),
-                  )
-                : ElevatedButton(
+                  ) 
+                  else if (reviewer.approval == 'pending') ElevatedButton(
                     onPressed: () {},
                     child: const Text('Request Approval'),
                   ),

@@ -1,6 +1,5 @@
-import 'package:donorlink/Controllers/Database.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/views/Donors/donor_account.dart';
 import 'package:donorlink/views/Donors/view_appointments.dart';
 import 'package:donorlink/views/Donors/view_donations.dart';
@@ -8,7 +7,7 @@ import 'package:donorlink/views/Donors/view_organisation.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final User? user;
+  final Donor user;
 
   const HomePage({super.key, required this.user});
 
@@ -17,28 +16,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Database db = Database();
   late Future<List<Organisation>> _organisationsFuture;
+  String _searchText = "";
 
   @override
   void initState() {
     super.initState();
-    _organisationsFuture = db.getOrganisations(); 
+    _organisationsFuture = widget.user.getOrganisations();
+  }
+
+  Future<void> _reloadOrganisations() async {
+    setState(() {
+      _organisationsFuture = widget.user.getOrganisations();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    String? name = widget.user?.name;
+    String? name = widget.user.name;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('DonorLink'),
+        leading: IconButton(
+          icon: const Icon(Icons.account_circle),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DonorAccount(user: widget.user),
+              ),
+            );
+          },
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DonorAccount(user: widget.user)));    
-            },
+            icon: const Icon(Icons.refresh),
+            onPressed: _reloadOrganisations,
           ),
         ],
       ),
@@ -53,24 +67,40 @@ class _HomePageState extends State<HomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDonations()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewDonations(user: widget.user),
+                      ),
+                    );
                   },
                   child: const Text('Donations'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAppointments()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAppointments(user: widget.user),
+                      ),
+                    );
                   },
                   child: const Text('Appointments'),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              decoration: const InputDecoration(
                 labelText: 'Search Organisations',
                 prefixIcon: Icon(Icons.search),
               ),
+              // Update _searchText on user input change
+              onChanged: (text) { 
+                setState(() {
+                  _searchText = text;
+                });
+              },
             ),
             Expanded(
               child: FutureBuilder<List<Organisation>>(
@@ -85,6 +115,8 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   List<Organisation> organisations = snapshot.data!;
+                  organisations = organisations.where((org) =>
+                  org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
 
                   return ListView.builder(
                     itemCount: organisations.length,
@@ -97,7 +129,12 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewOrganisation(org: organisations[index], user: widget.user!,),),
+                              MaterialPageRoute(
+                                builder: (context) => ViewOrganisation(
+                                  org: organisations[index],
+                                  user: widget.user,
+                                ),
+                              ),
                             );
                           },
                         ),

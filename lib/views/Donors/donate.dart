@@ -1,12 +1,12 @@
 // donate.dart
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/views/Donors/donation_reciept.dart';
 import 'package:flutter/material.dart';
 
 class Donate extends StatelessWidget {
   final Organisation org;
-  final User user;
+  final Donor user;
   const Donate({super.key, required this.org, required this.user});
 
   @override
@@ -19,12 +19,29 @@ class Donate extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
+            Form(child: Column(
+              children: [TextFormField(
+                decoration: const InputDecoration(labelText: 'Amount'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter an Amount.'; // Return an error message if the name is empty
+                  }
+                  return null; 
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'MPESA Number'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your MPESA phone Number.'; // Return an error message if the name is empty
+                  }
+                  return null; 
+                },
+              ),
+              ]
+            )
             ),
-            const TextField(
-              decoration: InputDecoration(labelText: 'MPESA Number'),
-            ),
+            
             ElevatedButton(
               onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => DonationReceipt(user: user,)));     

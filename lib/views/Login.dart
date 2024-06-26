@@ -1,4 +1,4 @@
-import 'package:donorlink/Controllers/Database.dart';
+import 'package:donorlink/Database/Database.dart';
 import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
@@ -122,13 +122,13 @@ class _LoginState extends State<Login> {
                             });
                           
                             Database db = Database();
-                            user = await db.getUser(validity!);
+                            user = await db.getUser(validity);
                             if (user is Donor) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Don.HomePage(
-                                          user: user,
+                                          user: user as Donor,
                                         )),
                               );
                             } else if (user is Organisation) {
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Org.HomePage(
-                                          user: user,
+                                          user: user as Organisation,
                                         )),
                               );
                             } else if (user is Reviewer) {

@@ -1,12 +1,19 @@
 // rating_confirmation.dart
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Rating.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class RatingConfirmation extends StatelessWidget {
+  final Donor user;
+  final Rating rating;
+  const RatingConfirmation({super.key, required this.user, required this.rating});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rating Confirmation'),
+        title: const Text('Rating Confirmation'),
       ),
       body: Center(
         child: Padding(
@@ -23,13 +30,10 @@ class RatingConfirmation extends StatelessWidget {
               SizedBox(height: 20),
               Text('Thanks for the Feedback', style: TextStyle(fontSize: 18)),
               SizedBox(height: 20),
-              Text('Rating Details'),
-              Text('Organisation: Red Cross'),
-              Text('Rating: 4.5'),
-              Text('Comment: Clean'),
+              Text(rating.toString()),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
                 },
                 child: Text('Home'),
               ),

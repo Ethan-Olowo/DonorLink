@@ -1,12 +1,19 @@
 // appointment_message.dart
+import 'package:donorlink/Models/Appointment.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentMessage extends StatelessWidget {
+  final Donor user;
+  final Appointment app;
+  const AppointmentMessage({super.key, required this.user, required this.app});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Message'),
+        title: const Text('Appointment Message'),
       ),
       body: Center(
         child: Padding(
@@ -23,15 +30,12 @@ class AppointmentMessage extends StatelessWidget {
               SizedBox(height: 20),
               Text('Appointment Requested', style: TextStyle(fontSize: 18)),
               SizedBox(height: 20),
-              Text('Appointment Details'),
-              Text('Organisation: Red Cross'),
-              Text('Date: 11/11/2025'),
-              Text('Reason: Visit'),
+              Text(app.toString()),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
                 },
-                child: Text('Home'),
+                child: const Text('Home'),
               ),
             ],
           ),

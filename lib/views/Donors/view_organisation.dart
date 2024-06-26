@@ -1,5 +1,5 @@
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/views/Donors/appointment.dart';
 import 'package:donorlink/views/Donors/donate.dart';
 import 'package:donorlink/views/Donors/rate.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class ViewOrganisation extends StatelessWidget {
   final Organisation org;
-  final User user;
+  final Donor user;
   const ViewOrganisation({super.key, required this.org, required this.user});
 
   @override
@@ -34,13 +34,13 @@ class ViewOrganisation extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewFinancials()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewFinancials(user: user, org: org,)));
                 },
                 child: const Text('View Finances'),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Appointment(org: org,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentRequest(org: org, user: user,)));
                 },
                 child: const Text('Request Appointment'),
               ),
@@ -52,7 +52,7 @@ class ViewOrganisation extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Rate(org: org,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Rate(org: org, user: user,)));
                 },
                 child: const Text('Rate'),
               ),

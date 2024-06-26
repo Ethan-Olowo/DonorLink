@@ -1,10 +1,10 @@
 // donation_receipt.dart
-import 'package:donorlink/Models/User.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DonationReceipt extends StatelessWidget {
-  final User user;
+  final Donor user;
   const DonationReceipt({super.key, required this.user});
 
   @override
