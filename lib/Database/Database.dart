@@ -134,9 +134,9 @@ Future<List<Rating>> getRatings(String orgid) async {
     final orgDoc = db.collection("Users").doc(rev.org.id);
     return await db.runTransaction((transaction) async {
       if(rev.approval == true){
-        transaction.update(orgDoc, {"approval": 'Approved'});          
+        transaction.update(orgDoc, {"approval": 'approved'});          
       }else{
-        transaction.update(orgDoc, {"approval": 'Rejected'});
+        transaction.update(orgDoc, {"approval": 'rejected'});
       }
       db.collection("Reviews").add(rev.toFirestore());
     }).then(
