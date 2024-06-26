@@ -9,6 +9,7 @@ import 'package:donorlink/views/Donors/home_page.dart' as Don;
 import 'package:donorlink/views/Organisations/home_page.dart' as Org;
 import 'package:donorlink/views/Register.dart';
 import 'package:donorlink/views/Reviewers/home_page.dart' as Rev;
+import 'package:donorlink/views/Reviewers/reviewer_account.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -98,7 +99,9 @@ class _LoginState extends State<Login> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _showPasswordResetDialog();
+                        },
                         child: const Text('Forgot Password'),
                       ),
                     ),
@@ -140,11 +143,16 @@ class _LoginState extends State<Login> {
                                         )),
                               );
                             } else if (user is Reviewer) {
+                              Reviewer us = user as Reviewer;
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                us.approval=='approved' ? MaterialPageRoute(
                                     builder: (context) => Rev.HomePage(
-                                          user: user! as Reviewer,
+                                          user: us,
+                                        )) 
+                                  :MaterialPageRoute(
+                                    builder: (context) => ReviewerAccount(
+                                          reviewer: us,
                                         )),
                               );
                             } else if (user is Admin) {
@@ -195,9 +203,62 @@ class _LoginState extends State<Login> {
         return 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         return 'Wrong password provided for that user.';
-      }else{
-        return 'Incorrect email or passpwrd';
+      } else {
+        return 'Incorrect email or password';
       }
+    }
+  }
+
+  void _showPasswordResetDialog() {
+    final TextEditingController resetEmailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: TextField(
+            controller: resetEmailController,
+            decoration: const InputDecoration(
+              labelText: 'Enter your email',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final String resetEmail = resetEmailController.text;
+                await _sendPasswordResetEmail(resetEmail);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _sendPasswordResetEmail(String email) async {
+    String message='';
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      message='Password reset email sent';
+    } on FirebaseAuthException catch (e) {
+      message = 'An error occurred';
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      }
+      
+    }finally{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 }
