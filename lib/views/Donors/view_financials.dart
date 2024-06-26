@@ -26,7 +26,7 @@ class _PageState extends State<ViewFinancials> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Donations'),
+        title: const Text('View Financials'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,7 +34,7 @@ class _PageState extends State<ViewFinancials> {
           children: [
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Search Donations',
+                labelText: 'Search Date',
                 prefixIcon: Icon(Icons.search),
               ),
               // Update _searchText on user input change
@@ -57,6 +57,8 @@ class _PageState extends State<ViewFinancials> {
                   }
 
                   List<Financial> fins = snapshot.data!;
+                  fins = fins.where((fin) =>
+                  fin.getDate().toLowerCase().contains(_searchText.toLowerCase())).toList();
 
                   return ListView.builder(
                     itemCount: fins.length,
