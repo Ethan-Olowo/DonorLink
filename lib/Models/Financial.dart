@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';
 import 'Organisation.dart';
 
 
@@ -25,6 +25,11 @@ class Financial {
     };
   }
 
+  String getDate() { 
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(date);
+    return formatted;
+   }
   void setLocation(String location) { /*...*/ }
   String getLocation() { /*...*/ return location; }
   void setDate(DateTime date) { /*...*/ }

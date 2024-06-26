@@ -1,22 +1,25 @@
-// view_financial.dart
+// financial_document.dart
+import 'package:donorlink/Models/Financial.dart';
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:flutter/material.dart';
 
-class ViewFinancial extends StatelessWidget {
+class FinancialDocument extends StatelessWidget {
+  final Reviewer user;
+  final Financial fin;
+  const FinancialDocument({super.key, required this.user, required this.fin});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Financial'),
+        title: Text('Financial Document'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Container(
-            height: 200,
-            width: 200,
-            color: Colors.grey,
-            child: Center(child: Text('Financial Document')),
-          ),
+      body: Center(
+        child: Container(
+          width: 300,
+          height: 500,
+          color: Colors.grey,
+          child: Center(child: Text('Financial Document')),
         ),
       ),
     );

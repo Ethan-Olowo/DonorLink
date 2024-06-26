@@ -45,6 +45,6 @@ class Review {
 
   @override
   String toString() {
-    return 'Organisation: ${org.name}, approval: $approval, comment: $comment';
+    return 'Organisation: ${org.name} \nApproved: $approval \ncomment: $comment';
   }
 }
