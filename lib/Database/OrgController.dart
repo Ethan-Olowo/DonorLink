@@ -1,4 +1,4 @@
-import 'package:donorlink/Controllers/Database.dart';
+import 'package:donorlink/Database/Database.dart';
 import 'package:donorlink/Models/Organisation.dart';
 
 class Orgcontroller extends Database {

@@ -4,7 +4,10 @@ import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Rating.dart';
+import 'package:donorlink/Models/Review.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
 
@@ -76,13 +79,29 @@ class Database {
   Future<List<Appointment>> getAppointments(String orgid) async {
     List<Appointment> appointments=[];
     await db.collection("Interactions").where("type", isEqualTo: 'appointment').where("org", isEqualTo: orgid).get().then(
-      (querySnapshot) {
+
+      (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
-          appointments.add(Appointment.fromFirestore(docSnapshot,));    
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          Organisation org = await getUser(orgid);
+          Donor donor = await getUser(data['donor']);
+          appointments.add(Appointment.fromFirestore(docSnapshot, org, donor));    
         }
       },
     );
     return appointments;
+  }
+
+Future<List<Rating>> getRatings(String orgid) async {
+    List<Rating> ratings=[];
+    await db.collection("Interactions").where("type", isEqualTo: 'rating').where("org", isEqualTo: orgid).get().then(
+      (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          ratings.add(Rating.fromFirestore(docSnapshot,));    
+        }
+      },
+    );
+    return ratings;
   }
 
   Future<List<Financial>> getFinancials(String orgid) async {
@@ -97,7 +116,48 @@ class Database {
     return financials;
   }
 
-  void addUser(User user, String type){
-    db.collection("Users").doc(user.id).set(user.toFirestore());
+  Future<bool> addUser(User user) async {
+    return await db.collection("Users").doc(user.id).set(user.toFirestore()).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
+  Future<bool> addInteraction(Interaction inter) async {
+    return await db.collection("Interactions").add(inter.toFirestore()).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
+  Future<bool> addReview(Review rev) async {
+    final orgDoc = db.collection("Users").doc(rev.org.id);
+    return await db.runTransaction((transaction) async {
+      if(rev.approval == true){
+        transaction.update(orgDoc, {"approval": 'Approved'});          
+      }else{
+        transaction.update(orgDoc, {"approval": 'Rejected'});
+      }
+      db.collection("Reviews").add(rev.toFirestore());
+    }).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+  Future<bool> addRating(Rating rating) async {
+    Organisation org = await rating.getOrg();
+    final orgDoc = db.collection("Users").doc(org.id);
+    return await db.runTransaction((transaction) async {
+      final snapshot = await transaction.get(orgDoc);
+      final newRatings = snapshot.get("ratings") + 1;
+      final newAvg = (snapshot.get("rating") * (snapshot.get("ratings")) + rating.rating)/newRatings;
+      transaction.update(orgDoc, {"ratings": newRatings,
+        'rating': newAvg
+        });
+      db.collection('Interactions').add(rating.toFirestore());
+    }).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
   }
 }
