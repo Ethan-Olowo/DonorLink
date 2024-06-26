@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'Interaction.dart';
-import 'Organisation.dart';
-import 'Donor.dart';
 
 class Donation extends Interaction {
   String transactionId;
@@ -25,4 +23,22 @@ class Donation extends Interaction {
   bool getStatus() { /*...*/ return completionStatus; }
   int getAmount() { /*...*/ return donationAmount; }
   void setAmount(int amount) { /*...*/ }
+  
+  @override
+  Map<String, dynamic> toFirestore() {
+    Map<String, dynamic> map = super.toFirestore();
+    map.addAll({
+      "type": "donation",
+      "transactionId": transactionId,
+      "completionStatus": completionStatus,
+      "donationAmount": donationAmount,      
+    });
+    return map;
+  }
+  
+  @override
+  String toString(){
+    return "${super.toString()} \ntransactionId: $transactionId \ndonationAmount: $donationAmount";
+  }
+ 
 }

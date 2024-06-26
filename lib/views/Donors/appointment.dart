@@ -1,62 +1,110 @@
-// appointment.dart
+import 'package:donorlink/Models/Appointment.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/views/Donors/appointment_messege.dart';
 import 'package:flutter/material.dart';
 
-class Appointment extends StatelessWidget {
+class AppointmentRequest extends StatefulWidget {
   final Organisation org;
-  const Appointment({super.key, required this.org});
+  final Donor user;
+  const AppointmentRequest({super.key, required this.org, required this.user});
+
+  @override
+  AppointmentRequestState createState() => AppointmentRequestState();
+}
+
+class AppointmentRequestState extends State<AppointmentRequest> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _reasonController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  DateTime? _selectedDate;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request Appointment'),
+        title: const Text('Request Appointment'),
       ),
-      body: Center( 
-        child:Padding(
+      body: Center(
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text('Appointment with ${org.name}'),
-              const TextField(
-                decoration: InputDecoration(labelText: 'Reason'),
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Appointment Date',
-                  hintText: 'Select Date',
-                  suffixIcon: Icon(Icons.calendar_today),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Text('Appointment with ${widget.org.name}'),
+                TextFormField(
+                  controller: _reasonController,
+                  decoration: const InputDecoration(labelText: 'Reason'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a reason';
+                    }       
+                    return null;
+                  },
                 ),
-                onTap: () async {
-                  DateTime date = DateTime(1900);
-                  FocusScope.of(context).requestFocus(new FocusNode());
-
-                  date = (await showDatePicker(
+                TextFormField(
+                  controller: _dateController,
+                  decoration: const InputDecoration(
+                    labelText: 'Appointment Date',
+                    hintText: 'Select Date',
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    final DateTime? picked = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(1900),
-                      lastDate: DateTime(2100)))!;
+                      lastDate: DateTime(2100),
+                    );
+                    if (picked != null && picked != _selectedDate) {
+                      setState(() {
+                        _selectedDate = picked;
+                        _dateController.text = "${picked.toLocal()}".split(' ')[0];
 
-                  print(date.toString());
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/appointment_message');
-                },
-                child: const Text('Request'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-            ],
+                      });
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select an appointment date';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      Appointment? app = await widget.user.requestAppointment(widget.org,_selectedDate!, _reasonController.text);
+                      if(app != null){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentMessage(user: widget.user, app: app,))); 
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Appointment request failed')));
+                      }    
+                    } else {
+                      // Show error or warning
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please fill out all fields')),
+                      );
+                    }
+                  },
+                  child: const Text('Request'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
           ),
         ),
-        
-      )
+      ),
     );
   }
 }

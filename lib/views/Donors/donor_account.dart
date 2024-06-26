@@ -10,7 +10,7 @@ class DonorAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donor Account'),
+        title: const Text('Donor Account'),
       ),
       body: Center(
         child: Padding(
@@ -18,21 +18,21 @@ class DonorAccount extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 50,
                 child: Icon(Icons.person, size: 50),
               ),
-              SizedBox(height: 20),
-              Text('${user.toString()}'),
+              const SizedBox(height: 20),
+              Text(user.toString()),
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Edit'),
+                child: const Text('Edit'),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.popUntil(context, ModalRoute.withName('/'));
                 },
-                child: Text('Log Out'),
+                child: const Text('Log Out'),
               ),
             ],
           ),

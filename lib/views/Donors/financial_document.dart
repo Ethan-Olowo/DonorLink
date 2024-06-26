@@ -1,8 +1,12 @@
 // financial_document.dart
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Financial.dart';
 import 'package:flutter/material.dart';
 
 class FinancialDocument extends StatelessWidget {
-  const FinancialDocument({super.key});
+  final Donor user;
+  final Financial fin;
+  const FinancialDocument({super.key, required this.user, required this.fin});
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'Interaction.dart';
-import 'Organisation.dart';
-import 'Donor.dart';
+
 
 class Rating extends Interaction {
-  int rating;
+  double rating;
   String comment;
 
   Rating(super.id, super.org, super.donor, this.rating, this.comment);
@@ -17,8 +15,24 @@ class Rating extends Interaction {
     return don;
   }  
 
-  void setRating(int rating) { /*...*/ }
+  void setRating(double rating) { /*...*/ }
   void setComment(String comment) { /*...*/ }
-  int getRating() { /*...*/ return rating; }
+  double getRating() { /*...*/ return rating; }
   String getComment() { /*...*/ return comment; }
+
+  @override
+  Map<String, dynamic> toFirestore() {
+    Map<String, dynamic> map = super.toFirestore();
+    map.addAll({ 
+      "type": "rating",
+      "rating": rating,
+      "comment": comment,
+    });
+    return map;
+  }
+
+  @override
+  String toString(){
+    return "${super.toString()} \nRating: $rating\nComment: $comment";
+  }
 }
