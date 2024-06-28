@@ -1,8 +1,9 @@
 import 'package:donorlink/firebase_options.dart';
+import 'package:donorlink/theme.dart';
+import 'package:donorlink/views/Login.dart';
 import 'package:donorlink/views/Splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,15 +22,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DonorLink',
       
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue,
-        brightness: Brightness.light, background: HexColor('eff0f4')),
-        useMaterial3: true,
-      ),
-
+      theme: AppTheme.themeData, 
       
-      //Add Text Theme 
-
       home:  const MyAppHome(),
       );
   }
@@ -42,11 +36,7 @@ class MyAppHome extends StatelessWidget {
         @override
         Widget build(BuildContext context) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('DonorLink'),
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              
-            ),
+            
             body: Center(
               child: Column(
                 
@@ -55,18 +45,22 @@ class MyAppHome extends StatelessWidget {
                   Text('Welcome to',
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
-                  const Image(image: AssetImage('assets/images/Logo.png')),
-                  
-                  SizedBox( 
-                    width: 100,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Splashscreen()));
-                      },
-                    tooltip: 'Go To Select User',
-                    child: const Text('Proceed'),
+                  const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 200,),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+                    },
+                    child: const Text('Login'),
                   ),
-                  ), // This trailing comma makes auto-formatting nicer for build methods.
+                  
+                  const SizedBox(height: 10,),
+                  
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Splashscreen()));
+                    },
+                    child: const Text('Create User'),
+                  ),
                 ],
               ),
             ),
