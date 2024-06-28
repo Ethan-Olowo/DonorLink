@@ -7,25 +7,23 @@ import 'package:donorlink/Models/User.dart' as Us;
 import 'package:donorlink/views/Admin/home_page.dart' as Adm;
 import 'package:donorlink/views/Donors/home_page.dart' as Don;
 import 'package:donorlink/views/Organisations/home_page.dart' as Org;
-import 'package:donorlink/views/Register.dart';
+import 'package:donorlink/views/Organisations/organisation_account.dart';
 import 'package:donorlink/views/Reviewers/home_page.dart' as Rev;
 import 'package:donorlink/views/Reviewers/reviewer_account.dart';
+import 'package:donorlink/views/Splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key, required this.userType});
-
-  final String userType;
+  const Login({super.key,});
 
   @override
-  State<Login> createState() => _LoginState(userType: userType);
+  State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  _LoginState({required this.userType});
+  _LoginState();
 
-  final String userType;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -44,8 +42,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: Text('$userType Login'),
+        //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: Text('Login'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -54,12 +52,12 @@ class _LoginState extends State<Login> {
         ),
       ),
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(image: AssetImage('assets/images/Logo.png')),
+              const Image(image: AssetImage('assets/images/Logo.png'), height: 200,),
               const SizedBox(height: 20),
               // Code functionality to read inputs
               Form(
@@ -135,11 +133,16 @@ class _LoginState extends State<Login> {
                                         )),
                               );
                             } else if (user is Organisation) {
+                              Organisation org = user as Organisation;
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                org.approval=='approved'? MaterialPageRoute(
                                     builder: (context) => Org.HomePage(
                                           user: user as Organisation,
+                                        ))
+                                :MaterialPageRoute(
+                                    builder: (context) => OrgAccount(
+                                          org: user as Organisation,
                                         )),
                               );
                             } else if (user is Reviewer) {
@@ -172,16 +175,12 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
               const Text('Don\'t Have an account?'),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => Register(
-                              userType: userType,
-                            )),
+                    MaterialPageRoute(builder: (context) => const Splashscreen())
                   );
                 },
                 child: const Text('Create an Account'),
