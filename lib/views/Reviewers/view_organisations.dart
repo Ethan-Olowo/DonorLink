@@ -1,32 +1,30 @@
-// home_page.dart
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
-import 'package:donorlink/views/Reviewers/reviewer_account.dart';
+import 'package:donorlink/views/Reviewers/home_page.dart';
 import 'package:donorlink/views/Reviewers/view_organisation.dart';
-import 'package:donorlink/views/Reviewers/view_organisations.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class ViewOrganisations extends StatefulWidget {
   final Reviewer user;
-  const HomePage({super.key, required this.user});
+  const ViewOrganisations({super.key, required this.user});
 
-@override
-  _HomePageState createState() => _HomePageState();
+    @override
+  _PageState createState() => _PageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late Future<List<Organisation>> _organisationsFuture;
+class _PageState extends State<ViewOrganisations> {
   String _searchText = "";
+   late Future<List<Organisation>> _organisationsFuture;
 
   @override
   void initState() {
     super.initState();
-    _organisationsFuture = widget.user.getRequestedOrganisations();
+    _organisationsFuture = widget.user.getOrganisations();
   }
 
   Future<void> _reloadOrganisations() async {
     setState(() {
-      _organisationsFuture = widget.user.getRequestedOrganisations();
+      _organisationsFuture = widget.user.getOrganisations();
     });
   }
 
@@ -36,12 +34,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('DonorLink'),
         leading: IconButton(
-          icon: const Icon(Icons.account_circle),
+          icon: const Icon(Icons.home),
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ReviewerAccount(reviewer: widget.user),
+                builder: (context) => HomePage(user: widget.user),
               ),
             );
           },
@@ -57,8 +55,6 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text('Pending Organisations'),
-            const SizedBox(height: 20),
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Search Organisations',
@@ -106,17 +102,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewOrganisations(user: widget.user,),
-                  ),
-                );
-              },
-              child: const Text('View All Organisations'),
             ),
           ],
         ),

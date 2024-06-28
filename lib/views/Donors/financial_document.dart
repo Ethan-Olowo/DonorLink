@@ -12,16 +12,15 @@ class FinancialDocument extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Financial Document'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
-      body: Center(
-        child: Container(
-          width: 300,
-          height: 500,
-          color: Colors.grey,
-          child: Center(child: Text('Financial Document')),
-        ),
-      ),
+      body: Column(children:[
+        Text('Financial Document from ${fin.org.name}', style: Theme.of(context).textTheme.headlineSmall),
+        Center(
+        //Replace with financial Document according to file location from Firebase cloud scorage
+        child: null,
+      ),])
     );
   }
 }

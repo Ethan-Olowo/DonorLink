@@ -37,7 +37,8 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DonorLink'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         leading: IconButton(
           icon: const Icon(Icons.account_circle),
           onPressed: () {

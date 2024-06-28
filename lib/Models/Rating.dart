@@ -11,7 +11,7 @@ class Rating extends Interaction {
   factory Rating.fromFirestore(DocumentSnapshot snapshot,){
       final data = snapshot.data() as Map<String, dynamic>;
     Rating don = Rating(snapshot.id, data['org'], data['donor'], data['rating'], data['comment']);
-    don.setDate(data['date']);
+    don.setDate(data['date'].toDate());
     return don;
   }  
 

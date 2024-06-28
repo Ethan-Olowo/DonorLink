@@ -15,7 +15,8 @@ class Appointment extends Interaction {
 
   factory Appointment.fromFirestore(DocumentSnapshot snapshot, Organisation org, Donor donor){
     final data = snapshot.data() as Map<String, dynamic>;
-    Appointment app = Appointment(snapshot.id, org , donor , data['approvalDate'], data['approvalStatus'], data['reason'], data['appointmentDate'].toDate());
+    DateTime? approveD = data['approvalDate']?.toDate(); 
+    Appointment app = Appointment(snapshot.id, org , donor , approveD, data['approvalStatus'], data['reason'], data['appointmentDate'].toDate());
     app.setDate(data['date'].toDate());
     return app;
   }
@@ -49,6 +50,12 @@ class Appointment extends Interaction {
   @override
   String toString(){
     return "${super.toString()} \nAppointment date: $appointmentDate \nReason: $reason";
+  }
+
+  @override
+  Future<bool> updateInteraction() {
+    approvalDate = DateTime.now();
+    return super.updateInteraction();
   }
   
 }

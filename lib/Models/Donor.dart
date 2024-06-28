@@ -40,9 +40,13 @@ class Donor extends User {
     return rating; 
   }
 
-  Donation donate(Organisation org, int donationAmount, ){ 
-    //prompt transaction via Mpesa
-    Donation don = Donation('', org, this, '', false, donationAmount);
+  Donation donate(Organisation org, int donationAmount, String donorDetails){ 
+    Donation don = Donation('', org, this, '', false, donationAmount, org.paymentMethod!);
+    if(org.paymentMethod=="Mpesa"){
+      //prompt transaction via Mpesa
+    }else if(org.paymentMethod=="Visa"){
+      //prompt transaction via Visa
+    }
     db.addInteraction(don);
     return don;
    }

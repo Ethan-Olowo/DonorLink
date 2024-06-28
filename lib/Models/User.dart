@@ -1,6 +1,7 @@
 
 import 'package:donorlink/Database/Database.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fire;
 
 
 abstract class User {
@@ -31,5 +32,14 @@ abstract class User {
     return db.getOrganisations();
   }
 
+  Future<bool> updateUser(){
+    return db.addUser(this);
+  }
+
+  Future<bool> updateEmail() async {
+    fire.User? user = await fire.FirebaseAuth.instance.currentUser;
+    await user?.verifyBeforeUpdateEmail("janeq@example.com");
+    return true;
+  }
   
 }

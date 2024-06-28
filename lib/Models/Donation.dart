@@ -3,16 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Interaction.dart';
 
 class Donation extends Interaction {
+  String paymentMethod;
   String transactionId;
   bool completionStatus;
   int donationAmount;
 
-  Donation(super.id, super.org, super.donor, this.transactionId, this.completionStatus, this.donationAmount);
+  Donation(super.id, super.org, super.donor, this.transactionId, this.completionStatus, this.donationAmount, this.paymentMethod);
 
   factory Donation.fromFirestore(DocumentSnapshot snapshot,){
       final data = snapshot.data() as Map<String, dynamic>;
-    Donation don = Donation(snapshot.id, data['org'], data['donor'], data['transactionId'], data['completionStatus'], data['donationAmount']);
-    don.setDate(data['date']);
+    Donation don = Donation(snapshot.id, data['org'], data['donor'], data['transactionId'], data['completionStatus'], data['donationAmount'], data['paymentMethod']);
+    don.setDate(data['date'].toDate());
     return don;
   }
 
@@ -31,7 +32,8 @@ class Donation extends Interaction {
       "type": "donation",
       "transactionId": transactionId,
       "completionStatus": completionStatus,
-      "donationAmount": donationAmount,      
+      "donationAmount": donationAmount,   
+      "paymentMethod": paymentMethod
     });
     return map;
   }

@@ -41,12 +41,12 @@ class Database {
     
   }
 
-  Future<Financial?> getFinancial(String org, String id) async {
-    final docRef = db.collection("Users").doc(org).collection("Financial").doc(id);
+  Future<Financial?> getFinancial(Organisation org, String id) async {
+    final docRef = db.collection("Financial").doc(id);
     Financial? financial;
     financial = await docRef.get().then(
       (DocumentSnapshot doc) {
-        return Financial.fromFirestore(doc);
+        return Financial.fromFirestore(doc, org);
       });
     return financial;
   }
@@ -104,12 +104,12 @@ Future<List<Rating>> getRatings(String orgid) async {
     return ratings;
   }
 
-  Future<List<Financial>> getFinancials(String orgid) async {
+  Future<List<Financial>> getFinancials(Organisation org) async {
     List<Financial> financials=[];
-    await db.collection("Users").doc(orgid).collection("Financials").get().then(
+    await db.collection("Financials").get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          financials.add(Financial.fromFirestore(docSnapshot,));    
+          financials.add(Financial.fromFirestore(docSnapshot, org));    
         }
       },
     );
@@ -130,11 +130,18 @@ Future<List<Rating>> getRatings(String orgid) async {
     );
   }
 
+  Future<bool> updateInteraction(Interaction inter) async {
+    return await db.collection("Interactions").doc(inter.id).set(inter.toFirestore()).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
   Future<bool> addReview(Review rev) async {
     final orgDoc = db.collection("Users").doc(rev.org.id);
     return await db.runTransaction((transaction) async {
       if(rev.approval == true){
-        transaction.update(orgDoc, {"approval": 'approved'});          
+        transaction.update(orgDoc, {"approval": 'approved', 'approvalDate' : rev.date});          
       }else{
         transaction.update(orgDoc, {"approval": 'rejected'});
       }
@@ -144,6 +151,7 @@ Future<List<Rating>> getRatings(String orgid) async {
       onError: (e) => false,
     );
   }
+  
   Future<bool> addRating(Rating rating) async {
     Organisation org = await rating.getOrg();
     final orgDoc = db.collection("Users").doc(org.id);
@@ -160,4 +168,19 @@ Future<List<Rating>> getRatings(String orgid) async {
       onError: (e) => false,
     );
   }
+
+  Future<bool> addFinancial(Financial fin) async {
+    return await db.collection("Financials").add(fin.toFirestore()).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
+  Future<bool> updateFinancial(Financial fin) async {
+    return await db.collection("Financials").doc(fin.id).set(fin.toFirestore()).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
 }
