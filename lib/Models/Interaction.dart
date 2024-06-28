@@ -1,9 +1,11 @@
 
+import 'package:donorlink/Database/Database.dart';
 import 'package:intl/intl.dart';
 import 'Organisation.dart';
 import 'Donor.dart';
 
 abstract class Interaction {
+  Database db = Database();
   String id;
   Organisation org;
   Donor donor;
@@ -23,6 +25,10 @@ abstract class Interaction {
       "donor": donor.id,
       "date": date,
     };
+  }
+
+  Future<bool> updateInteraction(){
+    return db.updateInteraction(this);
   }
 
   void setOrg(Organisation org) { /*...*/ }

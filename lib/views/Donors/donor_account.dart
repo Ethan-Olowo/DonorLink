@@ -1,17 +1,23 @@
 // donor_account.dart
 import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/views/Donors/edit_account.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DonorAccount extends StatelessWidget {
-  final Donor? user;
+  final Donor user;
   const DonorAccount({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Donor Account'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+        leading: IconButton( onPressed: () { 
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
+         }, icon: const Icon(Icons.home),)
       ),
       body: Center(
         child: Padding(
@@ -26,7 +32,9 @@ class DonorAccount extends StatelessWidget {
               const SizedBox(height: 20),
               Text(user.toString()),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditAccount(user: user,)));
+                },
                 child: const Text('Edit'),
               ),
               ElevatedButton(

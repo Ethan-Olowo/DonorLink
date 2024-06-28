@@ -1,4 +1,4 @@
-// view_organisation.dart
+import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/review.dart';
@@ -15,7 +15,7 @@ class ViewOrganisation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Organisation'),
+        title: const Text('View Organisation'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -27,19 +27,27 @@ class ViewOrganisation extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDonations(user: user, org: org,)));
               },
-              child: Text('View Donations'),
+              child: const Text('View Donations'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ViewFinancials(user: user, org: org,)));
               },
-              child: Text('View Finances'),
+              child: const Text('View Finances'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Financial fin = Financial('', org, '');
+                await fin.upload()? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Financial Requested')))
+                :ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Unable to Create Request')));
+              },
+              child: const Text('Request Financial Document'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewOrg(user: user, org: org,)));
               },
-              child: Text('Review'),
+              child: const Text('Review'),
             ),
           ],
         ),

@@ -1,4 +1,4 @@
-import 'package:donorlink/views/Login.dart';
+import 'package:donorlink/views/Register.dart';
 import 'package:flutter/material.dart';
 
 
@@ -30,16 +30,16 @@ class Splashscreen extends StatelessWidget {
             Text('Select User Type', style: Theme.of(context).textTheme.headlineLarge,),
             const SizedBox(height: 20),
             ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login(userType: 'Donor',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Donor',)));
             }, child: const Text('Donor')),
             ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login(userType: 'Organisation',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Organisation',)));
             }, child: const Text('Organisation')),
             ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login(userType: 'Reviewer',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Reviewer',)));
             }, child: const Text('Reviewer')),
             ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login(userType: 'Admin',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Admin',)));
             }, child: const Text('Admin')),
           ],
         ),

@@ -45,9 +45,9 @@ class Reviewer extends User {
     return '${super.toString()} \nApproval: $approval';
   }
 
-  Future<List<Organisation>> getPendingOrganisations() async{ 
+  Future<List<Organisation>> getRequestedOrganisations() async{ 
     var orgs = await getOrganisations();
-    var pending = orgs.where((org) => org.approval == 'pending').toList();
+    var pending = orgs.where((org) => org.approval == 'requested').toList();
     return pending;
   }  
 }

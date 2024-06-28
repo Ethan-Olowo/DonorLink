@@ -30,13 +30,15 @@ class _RateState extends State<Rate> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rate Organisation'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('Rate ${widget.org.name}', style: const TextStyle(fontSize: 18)),
+            
+            Text('Rate ${widget.org.name}', style: Theme.of(context).textTheme.headlineSmall,),
             Form(
               key: _formKey,
               child: Column(

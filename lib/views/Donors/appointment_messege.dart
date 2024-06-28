@@ -13,7 +13,8 @@ class AppointmentMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appointment Message'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Center(
         child: Padding(
@@ -21,15 +22,10 @@ class AppointmentMessage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                color: Colors.grey,
-                child: Center(child: Text('Logo')),
-              ),
-              SizedBox(height: 20),
-              Text('Appointment Requested', style: TextStyle(fontSize: 18)),
-              SizedBox(height: 20),
+              const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 100,),
+              const SizedBox(height: 20),
+              Text('Appointment Requested', style: Theme.of(context).textTheme.headlineSmall,),
+              const SizedBox(height: 20),
               Text(app.toString()),
               ElevatedButton(
                 onPressed: () {

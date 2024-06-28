@@ -23,7 +23,8 @@ class AppointmentRequestState extends State<AppointmentRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Request Appointment'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Center(
         child: Padding(
@@ -32,7 +33,7 @@ class AppointmentRequestState extends State<AppointmentRequest> {
             key: _formKey,
             child: Column(
               children: [
-                Text('Appointment with ${widget.org.name}'),
+                Text('Appointment with ${widget.org.name}', style: Theme.of(context).textTheme.headlineSmall),
                 TextFormField(
                   controller: _reasonController,
                   decoration: const InputDecoration(labelText: 'Reason'),

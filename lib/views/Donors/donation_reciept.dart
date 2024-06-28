@@ -1,17 +1,20 @@
 // donation_receipt.dart
+import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DonationReceipt extends StatelessWidget {
   final Donor user;
-  const DonationReceipt({super.key, required this.user});
+  final Donation don;
+  const DonationReceipt({super.key, required this.user, required this.don});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donation Receipt'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Center(
         child: Padding(
@@ -19,19 +22,10 @@ class DonationReceipt extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                color: Colors.grey,
-                child: Center(child: Text('Logo')),
-              ),
-              SizedBox(height: 20),
+              const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 100,),
               Text('Donation Successful', style: TextStyle(fontSize: 18)),
               SizedBox(height: 20),
-              Text('Donation Receipt'),
-              Text('Organisation: Red Cross'),
-              Text('Amount: KES 2,000'),
-              Text('Transaction ID: ABC12345'),
+              Text(don.toString()),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
