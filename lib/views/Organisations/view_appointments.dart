@@ -1,41 +1,41 @@
-import 'package:donorlink/Models/Donation.dart';
+// view_appointments.dart
+import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Organisations/view_donation.dart';
+import 'package:donorlink/views/Organisations/view_appointment.dart';
 import 'package:flutter/material.dart';
 
-class ViewDonations extends StatefulWidget {
+class ViewAppointments extends StatefulWidget {
   final Organisation user;
-  const ViewDonations({super.key, required this.user,});
+  final bool all;
+  const ViewAppointments({super.key, required this.user, required this.all,});
 
     @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<ViewDonations> {
+class _PageState extends State<ViewAppointments> {
   String _searchText = "";
-  late Future<List<Donation>> _donationsFuture;
+  late Future<List<Appointment>> _appointmentsFuture;
 
   @override
   void initState() {
     super.initState();
-    _donationsFuture = widget.user.getDonations(); 
+    _appointmentsFuture = widget.user.getAppointments(); 
   }
-
-    Future<void> _reloadDonations() async {
+  Future<void> _reloadAppointments() async {
     setState(() {
-      _donationsFuture = widget.user.getDonations();
+      _appointmentsFuture = widget.user.getAppointments();
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Donations'),
+        title: widget.all ?const Text('View Appointments'):const Text('Pending View Appointments'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _reloadDonations,
+            onPressed: _reloadAppointments,
           ),
         ],
       ),
@@ -45,44 +45,48 @@ class _PageState extends State<ViewDonations> {
           children: [
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Search Donations',
+                labelText: 'Search Appointments',
                 prefixIcon: Icon(Icons.search),
               ),
-              // Update _searchText on user input change
-              onChanged: (text) { 
+              onChanged: (text) { // Update _searchText on user input change
                 setState(() {
                   _searchText = text;
                 });
               },
             ),
                         Expanded(
-              child: FutureBuilder<List<Donation>>(
-                future: _donationsFuture,
+              child: FutureBuilder<List<Appointment>>(
+                future: _appointmentsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No Donations found.'));
+                    return const Center(child: Text('No Appointments found.'));
                   }
 
-                  List<Donation> donations = snapshot.data!;
-                  donations = donations.where((don) =>
-                  don.getDate().toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  List<Appointment> apps = snapshot.data!;
+                  widget.all ? apps = apps : apps = apps.where((app) => app.approvalStatus==false).toList();
+                  apps = apps.where((app) =>
+                  app.donor.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+
+                  if(apps.isEmpty){
+                    return const Center(child: Text('No Appointments found.'));
+                  }
 
                   return ListView.builder(
-                    itemCount: donations.length,
+                    itemCount: apps.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text(donations[index].getDate()),
+                          title: Text('${apps[index].donor.name}'),
                           subtitle: Text(
-                              'Donation Date: ${donations[index].date}\nAmount: ${donations[index].donationAmount}'),
+                              'Appointment Date: ${apps[index].getDate()}\nApproval: ${apps[index].approvalStatus}'),
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewDonation(user: widget.user, don: donations[index]),),
+                              MaterialPageRoute(builder: (context) => ViewAppointment(user: widget.user, app: apps[index],),),
                             );
                           },
                         ),
