@@ -2,7 +2,7 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Rating.dart';
-import 'package:donorlink/views/Donors/rating_confirmation.dart';
+import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
 
 class Rate extends StatefulWidget {
@@ -68,7 +68,7 @@ class _RateState extends State<Rate> {
                   String comment = _commentController.text;
                   Rating? rating = await widget.user.rateOrganisation(widget.org, score, comment);
                   if (rating != null) {
-                  MaterialPageRoute(builder: (context) => RatingConfirmation(user: widget.user, rating: rating,),);
+                  MaterialPageRoute(builder: (context) => InteractionView(user: widget.user, element: rating, New: true, type: 'Ratings',),);
                   }else{
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Rating failed')));
                   }

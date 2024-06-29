@@ -1,19 +1,19 @@
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Donors/appointment_messege.dart';
+import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
 
-class AppointmentRequest extends StatefulWidget {
+class RequestAppointment extends StatefulWidget {
   final Organisation org;
   final Donor user;
-  const AppointmentRequest({super.key, required this.org, required this.user});
+  const RequestAppointment({super.key, required this.org, required this.user});
 
   @override
-  AppointmentRequestState createState() => AppointmentRequestState();
+  RequestAppointmentState createState() => RequestAppointmentState();
 }
 
-class AppointmentRequestState extends State<AppointmentRequest> {
+class RequestAppointmentState extends State<RequestAppointment> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _reasonController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -81,7 +81,7 @@ class AppointmentRequestState extends State<AppointmentRequest> {
                     if (_formKey.currentState!.validate()) {
                       Appointment? app = await widget.user.requestAppointment(widget.org,_selectedDate!, _reasonController.text);
                       if(app != null){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentMessage(user: widget.user, app: app,))); 
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => InteractionView(user: widget.user, element: app, New: true, type: 'Appointments',))); 
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Appointment request failed')));
                       }    
