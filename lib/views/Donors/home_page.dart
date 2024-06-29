@@ -1,8 +1,7 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/views/Donors/donor_account.dart';
-import 'package:donorlink/views/Donors/view_appointments.dart';
-import 'package:donorlink/views/Donors/view_donations.dart';
+import 'package:donorlink/views/Donors/view_Interactions.dart';
 import 'package:donorlink/views/Donors/view_organisation.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewDonations(user: widget.user),
+                        builder: (context) => ViewInteractions(user: widget.user, type: 'Donations',),
                       ),
                     );
                   },
@@ -82,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewAppointments(user: widget.user),
+                        builder: (context) => ViewInteractions(user: widget.user, type: 'Appointments',),
                       ),
                     );
                   },

@@ -1,8 +1,7 @@
-// donate.dart
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Donors/donation_reciept.dart';
+import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
 
 class Donate extends StatelessWidget {
@@ -67,7 +66,7 @@ class Donate extends StatelessWidget {
                   Donation don = user.donate(org, donationAmount, donorDetails);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DonationReceipt(user: user, don: don)),
+                    MaterialPageRoute(builder: (context) => InteractionView(user: user, element: don, New: true, type: 'Donations',)),
                   );
                 }
               },

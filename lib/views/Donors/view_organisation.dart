@@ -1,6 +1,6 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Donors/appointment.dart';
+import 'package:donorlink/views/Donors/request_appointment.dart';
 import 'package:donorlink/views/Donors/donate.dart';
 import 'package:donorlink/views/Donors/rate.dart';
 import 'package:donorlink/views/Donors/view_financials.dart';
@@ -15,7 +15,8 @@ class ViewOrganisation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Organisation'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Center(
         child: Padding(
@@ -23,11 +24,7 @@ class ViewOrganisation extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center, // Center the column
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                child: const Center(child: Image(image: AssetImage('assets/images/Logo.png'))),
-              ),
+              const Center(child: Image(image: AssetImage('assets/images/NamedLogo.png'), height: 100,)),
               const SizedBox(height: 20),
               const Text('Organisation Details', style: TextStyle(fontSize: 18)),
               Text(org.toString()),
@@ -40,7 +37,7 @@ class ViewOrganisation extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentRequest(org: org, user: user,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RequestAppointment(org: org, user: user,)));
                 },
                 child: const Text('Request Appointment'),
               ),
