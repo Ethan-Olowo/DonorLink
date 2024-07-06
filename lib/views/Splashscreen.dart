@@ -9,8 +9,8 @@ class Splashscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: const Text('DonorLink'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -23,11 +23,9 @@ class Splashscreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Image(
-              image: AssetImage('assets/images/Logo.png')
-            ),
-            const SizedBox(height: 20),
-            Text('Select User Type', style: Theme.of(context).textTheme.headlineLarge,),
+            
+            Text('Create a New Account', style: Theme.of(context).textTheme.displayLarge,),
+            Text('Select User Type', style: Theme.of(context).textTheme.headlineSmall,),
             const SizedBox(height: 20),
             ElevatedButton(onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Donor',)));
@@ -38,9 +36,6 @@ class Splashscreen extends StatelessWidget {
             ElevatedButton(onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Reviewer',)));
             }, child: const Text('Reviewer')),
-            ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register(userType: 'Admin',)));
-            }, child: const Text('Admin')),
           ],
         ),
       ),

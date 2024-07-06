@@ -1,9 +1,8 @@
-import 'package:donorlink/Database/Database.dart';
+import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
-import 'package:donorlink/Models/User.dart' as Us;
 import 'package:donorlink/views/Admin/home_page.dart' as Adm;
 import 'package:donorlink/views/Donors/home_page.dart' as Don;
 import 'package:donorlink/views/Organisations/home_page.dart' as Org;
@@ -27,7 +26,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  Us.User? user;
+  dynamic user;
   String? errorMessage; // State variable for error messages
 
   @override
@@ -42,7 +41,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        toolbarHeight: 50,
         title: Text('Login'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -57,15 +56,14 @@ class _LoginState extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(image: AssetImage('assets/images/Logo.png'), height: 200,),
+              const Image(image: AssetImage('assets/images/Logo.png'), height: 150,),
               const SizedBox(height: 20),
-              // Code functionality to read inputs
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Email'),
                       controller: emailController,
                       validator: (String? value) {
@@ -77,7 +75,7 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Password'),
                       controller: passwordController,
                       obscureText: true,
@@ -91,7 +89,7 @@ class _LoginState extends State<Login> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(errorMessage ?? '',
-                          style: TextStyle(color: Colors.red)), // Display error message
+                          style: const TextStyle(color: Colors.red)), // Display error message
                     ),
                     // Add this functionality
                     Align(
@@ -113,7 +111,7 @@ class _LoginState extends State<Login> {
                             setState(() {
                               errorMessage = 'An unknown error occurred.';
                             });
-                          } else if (validity.startsWith('No user found') || validity.startsWith('Wrong password')) {
+                          } else if (validity.contains('.')) {
                             setState(() {
                               errorMessage = validity;
                             });
@@ -124,6 +122,7 @@ class _LoginState extends State<Login> {
                           
                             Database db = Database();
                             user = await db.getUser(validity);
+                            
                             if (user is Donor) {
                               Navigator.push(
                                 context,
@@ -163,7 +162,7 @@ class _LoginState extends State<Login> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Adm.HomePage(
-                                          user: user,
+                                          user: user as Admin,
                                         )),
                               );
                             }
@@ -203,7 +202,7 @@ class _LoginState extends State<Login> {
       } else if (e.code == 'wrong-password') {
         return 'Wrong password provided for that user.';
       } else {
-        return 'Incorrect email or password';
+        return 'Incorrect email or password.';
       }
     }
   }

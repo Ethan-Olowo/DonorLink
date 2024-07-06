@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:donorlink/Database/Database.dart';
+import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
@@ -32,7 +32,6 @@ class _RegisterState extends State<Register> {
     if (widget.userType == 'Admin') {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             title: Text('${widget.userType} Registration'),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -42,12 +41,12 @@ class _RegisterState extends State<Register> {
             ),
           ),
           body: const Center(
-            child: Text('Cannot Create an account for this User type'),
+            child: Text('Cannot Create an account for this User type \nTry Logging in'),
           ));
     } else {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          toolbarHeight: 50,
           title: Text('${widget.userType} Registration'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -65,7 +64,7 @@ class _RegisterState extends State<Register> {
                 children: [
                   const Image(
                     image: AssetImage('assets/images/Logo.png'),
-                    height: 200,
+                    height: 150,
                   ),
                   const SizedBox(height: 20),
                   Form(
