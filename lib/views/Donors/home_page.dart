@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewInteractions(user: widget.user, type: 'Donations',),
+                        builder: (context) => ViewInteractions(user: widget.user, type: 'donation',),
                       ),
                     );
                   },
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewInteractions(user: widget.user, type: 'Appointments',),
+                        builder: (context) => ViewInteractions(user: widget.user, type: 'appointment',),
                       ),
                     );
                   },
