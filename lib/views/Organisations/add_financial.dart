@@ -22,7 +22,8 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Financial Document'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,6 +32,7 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('Add Financial Document', style: Theme.of(context).textTheme.headlineSmall),
               Center(
                 child: ElevatedButton(
                   onPressed: _isUploading ? null : _uploadFile,

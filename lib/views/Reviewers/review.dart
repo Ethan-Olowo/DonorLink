@@ -22,7 +22,8 @@ class _ReviewOrgState extends State<ReviewOrg> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Review'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,6 +31,7 @@ class _ReviewOrgState extends State<ReviewOrg> {
           key: _formKey,
           child: Column(
             children: [
+              Text('Review', style: Theme.of(context).textTheme.headlineSmall),
               DropdownButtonFormField<String>(
                 items: const [
                   DropdownMenuItem(value: 'Approve', child: Text('Approve')),

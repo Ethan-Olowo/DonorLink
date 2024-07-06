@@ -1,9 +1,8 @@
-// home_page.dart
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/views/Organisations/organisation_account.dart';
-import 'package:donorlink/views/Organisations/view_appointments.dart';
-import 'package:donorlink/views/Organisations/view_donations.dart';
+import 'package:donorlink/views/Organisations/view_interactions.dart';
 import 'package:donorlink/views/Organisations/view_financials.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +13,10 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.user});
 
   Future<Map<String, int>> fetchDonationsByMonth() async {
-    List<Donation> donations = await user.getDonations();
+    List<Interaction> donations = await user.getInteractions('donation');
     Map<String, int> monthlyDonations = {};
-    for (Donation donation in donations) {
+    for (Interaction inter in donations) {
+      Donation donation = inter as Donation;
       String month = DateFormat('MMM yyyy').format(donation.date);
       if (!monthlyDonations.containsKey(month)) {
         monthlyDonations[month] = 0;
@@ -48,6 +48,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text('Welcome ${user.name}', style: const TextStyle(fontSize: 24)),
             const Text('Appointments'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -57,7 +58,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewAppointments(user: user, all: false),
+                        builder: (context) => ViewInteractions(user: user, all: false, type: 'appointment',),
                       ),
                     );
                   },
@@ -68,7 +69,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewAppointments(user: user, all: true),
+                        builder: (context) => ViewInteractions(user: user, all: true, type: 'appointment',),
                       ),
                     );
                   },
@@ -198,12 +199,13 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
+            
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewDonations(user: user),
+                    builder: (context) => ViewInteractions(user: user, all: true, type: 'donation',),
                   ),
                 );
               },

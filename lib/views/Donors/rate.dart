@@ -1,4 +1,3 @@
-// rate.dart
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Rating.dart';

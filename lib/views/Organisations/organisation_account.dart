@@ -1,4 +1,3 @@
-
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/views/Organisations/edit_account.dart';
 import 'package:donorlink/views/Organisations/home_page.dart';
@@ -24,7 +23,8 @@ class _PageState extends State<OrgAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Organisation Account'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         leading: widget.org.approval == 'approved'? IconButton( onPressed: () { 
           Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: widget.org,)));
          }, icon: const Icon(Icons.home),) 

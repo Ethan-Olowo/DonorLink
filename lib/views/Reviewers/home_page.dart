@@ -1,4 +1,3 @@
-// home_page.dart
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/reviewer_account.dart';
@@ -34,7 +33,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DonorLink'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         leading: IconButton(
           icon: const Icon(Icons.account_circle),
           onPressed: () {
@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text('Welcome ${widget.user.name}', style: const TextStyle(fontSize: 24)),
             const Text('Pending Organisations'),
             const SizedBox(height: 20),
             const TextField(
@@ -107,6 +108,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
+            
             ElevatedButton(
               onPressed: () {
                 Navigator.push(

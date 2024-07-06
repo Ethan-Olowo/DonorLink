@@ -31,7 +31,8 @@ class _PageState extends State<ViewFinancials> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.requests? const Text('View Financial Requests'):const Text('View Financials'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -43,6 +44,8 @@ class _PageState extends State<ViewFinancials> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+          widget.requests?  Text('View Financial Requests', style: Theme.of(context).textTheme.headlineSmall)
+          :Text('View Financials', style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Search Date',
@@ -86,7 +89,7 @@ class _PageState extends State<ViewFinancials> {
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text('${fins[index].getDate()}'),
+                          title: Text(fins[index].getDate()),
                           onTap: () {
                             Navigator.push(
                               context,

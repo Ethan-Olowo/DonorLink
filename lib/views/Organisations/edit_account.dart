@@ -85,7 +85,8 @@ class _EditAccountState extends State<EditAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Organisation Account'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,6 +94,7 @@ class _EditAccountState extends State<EditAccount> {
           key: _formKey,
           child: ListView(
             children: [
+              Text('Edit Organisation Account', style: Theme.of(context).textTheme.headlineSmall),
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Name'),

@@ -1,4 +1,3 @@
-// review_confirmation.dart
 import 'package:donorlink/Models/Review.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/home_page.dart';
@@ -13,18 +12,15 @@ class ReviewConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Review Confirmation'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 200,
-              width: 200,
-              color: Colors.grey,
-              child: Center(child: Text('Logo')),
-            ),
+            Text('Review Confirmation', style: Theme.of(context).textTheme.headlineSmall),
+            const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 100,),
             const SizedBox(height: 20),
             Text(rev.toString()),
             const SizedBox(height: 20),

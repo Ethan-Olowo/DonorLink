@@ -1,4 +1,3 @@
-// donor_account.dart
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/views/Donors/edit_account.dart';
 import 'package:donorlink/views/Donors/home_page.dart';

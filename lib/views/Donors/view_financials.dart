@@ -1,7 +1,7 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Donors/financial_document.dart';
+import 'package:donorlink/views/Donors/view_financial.dart';
 import 'package:flutter/material.dart';
 
 class ViewFinancials extends StatefulWidget {

@@ -26,7 +26,9 @@ class _PageState extends State<ViewFinancials> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Financials'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+        //title: const Text('View Financials'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

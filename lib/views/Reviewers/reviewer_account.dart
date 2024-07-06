@@ -23,7 +23,8 @@ class _PageState extends State<ReviewerAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reviewer Account'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
         leading: widget.reviewer.approval == 'approved'? IconButton( onPressed: () { 
           Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: widget.reviewer,)));
          }, icon: const Icon(Icons.home),) :null,

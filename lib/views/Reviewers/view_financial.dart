@@ -13,7 +13,9 @@ class FinancialDocument extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Financial Document'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+        //title: const Text('Financial Document'),
       ),
       body: fin.getLocation() != null
           ? PDFView(
