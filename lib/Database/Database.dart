@@ -12,8 +12,6 @@ import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
 
 
-// ignore_for_file: file_names
-
 class Database {
   final db = FirebaseFirestore.instance;
   
@@ -32,8 +30,12 @@ class Database {
         }else if(data['type']=='reviewer'){
           user = Reviewer.fromFirestore(doc);
           return user;
-        }else if(data['type']=='Admin'){
+        }else if(data['type']=='admin'){
           user = Admin.fromFirestore(doc);
+          return user;
+        }else{
+          user = 'error Retrieving user';
+          return user;
         }
       },
     );
@@ -41,14 +43,18 @@ class Database {
     
   }
 
-  Future<Financial?> getFinancial(Organisation org, String id) async {
-    final docRef = db.collection("Financial").doc(id);
-    Financial? financial;
-    financial = await docRef.get().then(
-      (DocumentSnapshot doc) {
-        return Financial.fromFirestore(doc, org);
-      });
-    return financial;
+  Future<List<User>> getUsers(String type) async {
+    List<User> users=[];
+    await db.collection("Users").where("type", isEqualTo: type).get().then(
+    (querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        if(type == 'donor')users.add(Donor.fromFirestore(docSnapshot,));
+        if(type == 'organisation')users.add(Organisation.fromFirestore(docSnapshot,));
+        if(type == 'reviewer')users.add(Reviewer.fromFirestore(docSnapshot,));    
+      }
+    },    
+  );
+  return users;
   }
 
   Future<List<Organisation>> getOrganisations() async {
@@ -64,49 +70,25 @@ class Database {
   return orgs;
   }
 
-  Future<List<Donation>> getDonations(String orgid) async {
-    List<Donation> donations=[];
-    await db.collection("Interactions").where("type", isEqualTo: 'donation').where("org", isEqualTo: orgid).get().then(
-      (querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          donations.add(Donation.fromFirestore(docSnapshot,));    
-        }
-      },
-    );
-    return donations;
-  }
-
-  Future<List<Appointment>> getAppointments(String orgid) async {
-    List<Appointment> appointments=[];
-    await db.collection("Interactions").where("type", isEqualTo: 'appointment').where("org", isEqualTo: orgid).get().then(
-
+  Future<List<Interaction>> getInteractions(User user, String type) async {
+    List<Interaction> inters=[];
+    await db.collection("Interactions").where("type", isEqualTo: type).where("org", isEqualTo: user.id).get().then(
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data() as Map<String, dynamic>;
-          Organisation org = await getUser(orgid);
           Donor donor = await getUser(data['donor']);
-          appointments.add(Appointment.fromFirestore(docSnapshot, org, donor));    
+          if(type=='donation')inters.add(Donation.fromFirestore(docSnapshot,user as Organisation, donor));    
+          if(type=='appointment')inters.add(Appointment.fromFirestore(docSnapshot,user as Organisation, donor));    
+          if(type=='rating')inters.add(Rating.fromFirestore(docSnapshot,user as Organisation, donor));    
         }
       },
     );
-    return appointments;
+    return inters;
   }
 
-Future<List<Rating>> getRatings(String orgid) async {
-    List<Rating> ratings=[];
-    await db.collection("Interactions").where("type", isEqualTo: 'rating').where("org", isEqualTo: orgid).get().then(
-      (querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          ratings.add(Rating.fromFirestore(docSnapshot,));    
-        }
-      },
-    );
-    return ratings;
-  }
-
-  Future<List<Financial>> getFinancials(Organisation org) async {
+  Future<List<Financial>> getFinancials(Organisation? org) async {
     List<Financial> financials=[];
-    await db.collection("Financials").get().then(
+    await db.collection("Financials").where('org', isEqualTo: org!.id).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
           financials.add(Financial.fromFirestore(docSnapshot, org));    
@@ -114,6 +96,20 @@ Future<List<Rating>> getRatings(String orgid) async {
       },
     );
     return financials;
+  }
+
+  Future<List<Review>> getReviews(User user) async {
+    List<Review> revs=[];
+    await db.collection("Reviews").where("org", isEqualTo: user.id).get().then(
+      (querySnapshot) async {
+        for (var docSnapshot in querySnapshot.docs) {
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          Reviewer rev = await getUser(data['reviewer']);
+          revs.add(Review.fromFirestore(docSnapshot, user as Organisation, rev));    
+        }
+      },
+    );
+    return revs;
   }
 
   Future<bool> addUser(User user) async {
@@ -183,4 +179,55 @@ Future<List<Rating>> getRatings(String orgid) async {
     );
   }
 
+  Future<Map<String, int>> getStats() async {
+    Map<String, int> stats = {};
+    List<String> users = ['donor','organisation', 'reviewer','admin'];
+    List<String> inters = ['donation','rating', 'appointment',];
+    for(String user in users){
+      await db.collection("Users").where("type", isEqualTo: user).count().get().then(
+        (res) => stats.addAll({user: res.count ?? 0}),
+      );
+    }
+    for(String inter in inters){
+      await db.collection("Interactions").where("type", isEqualTo: inter).count().get().then(
+        (res) => stats.addAll({inter:res.count ?? 0}),
+      );
+    }
+    await db.collection("Reviews").count().get().then(
+      (res) => stats.addAll({'review':res.count ?? 0}),
+    );
+    await db.collection("Financials").count().get().then(
+      (res) => stats.addAll({'financial':res.count ?? 0}),
+    );
+    /*await db.collection("Interactions").where("type", isEqualTo: 'donation').aggregate(sum('donationAmount')).get().then(
+      (res) => stats.addAll({'total donations':res.getSum('donationAmount')?.round()}),
+    );*/
+    return stats;
+  }
+
+  /*Future<List<Object>> getDocuments(String collection, List<List<String>> conditions) async {
+    List<Donation> donations=[];
+    Query<Map<String, dynamic>> query= db.collection(collection);
+    for( List<String> condition in conditions){
+      query = query.where(condition[0], isEqualTo: condition[1]);
+    }
+    await query.get().then(
+      (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          donations.add(Donation.fromFirestore(docSnapshot,));    
+        }
+      },
+    );
+    return donations;
+  }
+  Future<Financial?> getFinancial(Organisation org, String id) async {
+    final docRef = db.collection("Financial").doc(id);
+    Financial? financial;
+    financial = await docRef.get().then(
+      (DocumentSnapshot doc) {
+        return Financial.fromFirestore(doc, org);
+      });
+    return financial;
+  }
+  */
 }
