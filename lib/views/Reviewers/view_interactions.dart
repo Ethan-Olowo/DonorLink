@@ -1,41 +1,45 @@
+import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
-import 'package:donorlink/views/Reviewers/view_donation.dart';
+import 'package:donorlink/views/Reviewers/view_interaction.dart';
 import 'package:flutter/material.dart';
 
-class ViewDonations extends StatefulWidget {
+class ViewInteractions extends StatefulWidget {
   final Reviewer user;
   final Organisation org;
-  const ViewDonations({super.key, required this.user, required this.org,});
+  final String type;
+  const ViewInteractions({super.key, required this.user, required this.org, required this.type,});
 
     @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<ViewDonations> {
+class _PageState extends State<ViewInteractions> {
   String _searchText = "";
-  late Future<List<Donation>> _donationsFuture;
+  late Future<List<Interaction>> _elementsFuture;
 
   @override
   void initState() {
     super.initState();
-    _donationsFuture = widget.org.getDonations(); 
+    _elementsFuture = widget.org.getInteractions(widget.type); 
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Donations'),
+        toolbarHeight: 50,
+        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search Donations',
-                prefixIcon: Icon(Icons.search),
+              decoration: InputDecoration(
+                labelText: 'Search ${widget.type}',
+                prefixIcon: const Icon(Icons.search),
               ),
               // Update _searchText on user input change
               onChanged: (text) { 
@@ -45,33 +49,34 @@ class _PageState extends State<ViewDonations> {
               },
             ),
                         Expanded(
-              child: FutureBuilder<List<Donation>>(
-                future: _donationsFuture,
+              child: FutureBuilder<List<Interaction>>(
+                future: _elementsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No Donations found.'));
+                    return Center(child: Text('No ${widget.type} records found.'));
                   }
 
-                  List<Donation> donations = snapshot.data!;
-                  donations = donations.where((don) =>
-                  don.getDate().toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  List<Interaction> elements = snapshot.data!;
+                  elements = elements.where((element) =>
+                  element.getDate().toLowerCase().contains(_searchText.toLowerCase())).toList();
 
                   return ListView.builder(
-                    itemCount: donations.length,
+                    itemCount: elements.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text(donations[index].getDate()),
-                          subtitle: Text(
-                              'Donation Date: ${donations[index].date}\nAmount: ${donations[index].donationAmount}'),
+                          title: Text(elements[index].getDate()),
+                          subtitle: widget.type == 'appointment' ?
+                              Text('Appointment Date: ${elements[index].getDate()}\nApproval: ${(elements[index] as Appointment).approvalStatus}')
+                              :Text('Donation Date: ${elements[index].getDate()}\nAmount: ${(elements[index] as Donation).donationAmount}'),
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewDonation(user: widget.user, don: donations[index]),),
+                              MaterialPageRoute(builder: (context) => ViewInteraction(user: widget.user, inter: elements[index],),),
                             );
                           },
                         ),

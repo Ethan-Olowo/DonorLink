@@ -1,10 +1,10 @@
-// view_appointments.dart
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 
 class ViewInteractions extends StatefulWidget {
   final Donor user;
@@ -22,8 +22,7 @@ class _PageState extends State<ViewInteractions> {
   @override
   void initState() {
     super.initState();
-    widget.type=='Appointments'?_elementsFuture = widget.user.getAppointments()
-    : _elementsFuture = widget.user.getDonations(); 
+    _elementsFuture = widget.user.getInteractions(widget.type); 
   }
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class _PageState extends State<ViewInteractions> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No ${widget.type} found.'));
+                    return Center(child: Text('No ${widget.type.capitalize()} records found.'));
                   }
 
                   List<Interaction> elements = snapshot.data!;
