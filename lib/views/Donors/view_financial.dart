@@ -1,4 +1,3 @@
-// financial_document.dart
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:flutter/material.dart';
