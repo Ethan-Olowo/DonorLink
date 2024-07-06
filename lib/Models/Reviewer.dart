@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donorlink/Database/rev_controller.dart';
 
 import 'User.dart';
 import 'Organisation.dart';
 import 'Review.dart';
 
 class Reviewer extends User {
-  
+  @override
+  var db = RevController();
   String approval;
 
   Reviewer(super.id, super.name, super.phone, super.email, this.approval);
@@ -38,11 +40,18 @@ class Reviewer extends User {
     }
     return null;
    }
-  List<Review> getReviews() { /*...*/ return []; }
+  Future<List<Review>> getReviews() async { 
+    return await db.getReviews(this);
+   }
   
   @override
   String toString() {
     return '${super.toString()} \nApproval: $approval';
+  }
+
+  @override
+  String info(){
+    return 'Approval $approval';
   }
 
   Future<List<Organisation>> getRequestedOrganisations() async{ 

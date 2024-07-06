@@ -1,5 +1,6 @@
 
-import 'package:donorlink/Database/Database.dart';
+import 'package:donorlink/Database/database.dart';
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire;
 
@@ -17,6 +18,10 @@ abstract class User {
   @override
   String toString(){
     return "Name: $name \nPhone number: $phone \nEmail Address: $email";
+  }
+
+  String info(){
+    return '';
   }
 
   Map<String, dynamic> toFirestore(){
@@ -40,6 +45,10 @@ abstract class User {
     fire.User? user = await fire.FirebaseAuth.instance.currentUser;
     await user?.verifyBeforeUpdateEmail("janeq@example.com");
     return true;
+  }
+
+  Future<List<Interaction>> getInteractions(String type) async {
+    return [];
   }
   
 }

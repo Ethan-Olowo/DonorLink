@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/Models/Review.dart';
 
 import 'User.dart';
 import 'Financial.dart';
-import 'Rating.dart';
-import 'Appointment.dart';
-import 'Donation.dart';
+
 
 class Organisation extends User {
   String? type;
@@ -62,20 +62,22 @@ class Organisation extends User {
     return 'Organisation ${super.toString()} \nCharity Type: $type \nLocation: $location \nRating: $rating \nPayment Method: $paymentMethod \nPayment Details: $paymentDetails ';
   }
 
-  Future<List<Donation>> getDonations() async {
-    return await db.getDonations(id);
+  @override
+  String info(){
+    return 'Charity type: $type \nRating: $rating';
+  }
+
+  @override
+  Future<List<Interaction>> getInteractions(String type) async {
+    return await db.getInteractions(this, type);
   }
 
   Future<List<Financial>> getFinancials()async{
     return await db.getFinancials(this);
   }
 
-  Future<List<Appointment>> getAppointments() async {
-    return await db.getAppointments(id);
-  }
-
-  Future<List<Rating>> getRatings() async {
-    return await db.getRatings(id);
+  Future<List<Review>> getReviews()async{
+    return await db.getReviews(this);
   }
 
   int? remainingDays(){

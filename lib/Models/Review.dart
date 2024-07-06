@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -14,9 +15,9 @@ class Review {
 
   Review(this.reviewId, this.approval, this.comment, this.reviewer, this.org);
 
-  factory Review.fromFirestore(DocumentSnapshot snapshot,){
+  factory Review.fromFirestore(DocumentSnapshot snapshot, Organisation org, Reviewer reviewer){
       final data = snapshot.data() as Map<String, dynamic>;
-      var rev= Review(snapshot.id, data['approval'], data['comment'], data['reviewer'], data['org']);
+      var rev= Review(snapshot.id, data['approval'], data['comment'], reviewer , org);
       rev.date = data['date'];
       return rev;
   }
@@ -38,7 +39,11 @@ class Review {
   void setComment(String comment) { /*...*/ }
   String getComment() { /*...*/ return comment; }
   Organisation getOrganisation() { /*...*/ return org; }
-  DateTime getDate() { /*...*/ return date; }
+  String getDate() { 
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(date);
+    return formatted;
+   }
   void setDate(DateTime date) { /*...*/ }
   Reviewer getReviewer() { /*...*/ return reviewer; }
   void setReviewer(Reviewer reviewer) { /*...*/ }

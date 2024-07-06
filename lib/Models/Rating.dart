@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'Interaction.dart';
 
 
@@ -8,9 +10,9 @@ class Rating extends Interaction {
 
   Rating(super.id, super.org, super.donor, this.rating, this.comment);
 
-  factory Rating.fromFirestore(DocumentSnapshot snapshot,){
+  factory Rating.fromFirestore(DocumentSnapshot snapshot,Organisation org, Donor donor){
       final data = snapshot.data() as Map<String, dynamic>;
-    Rating don = Rating(snapshot.id, data['org'], data['donor'], data['rating'], data['comment']);
+    Rating don = Rating(snapshot.id, org, donor, data['rating'], data['comment']);
     don.setDate(data['date'].toDate());
     return don;
   }  

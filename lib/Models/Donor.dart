@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donorlink/Database/DonorController.dart';
+import 'package:donorlink/Database/donor_controller.dart';
+import 'package:donorlink/Models/Interaction.dart';
 
 import 'User.dart';
 import 'Organisation.dart';
@@ -8,7 +9,7 @@ import 'Appointment.dart';
 import 'Rating.dart';
 
 class Donor extends User {
-  int rating;
+  double rating;
   @override
   var db = Donorcontroller();
 
@@ -19,7 +20,7 @@ class Donor extends User {
   factory Donor.fromFirestore(DocumentSnapshot snapshot,){
       final data = snapshot.data() as Map<String, dynamic>;
       return Donor(
-        id: snapshot.id , name: data['name'], phone: data['phone'], email: data['email'], rating:data[ 'rating'],
+        id: snapshot.id , name: data['name'], phone: data['phone'], email: data['email'], rating:data[ 'rating'].toDouble(),
       );
     }
   
@@ -31,13 +32,6 @@ class Donor extends User {
       "rating": rating,
     });
     return map;
-  }
-
-  void setRating(int rating) {
-    this.rating=rating;
-  }
-  int getRating() {
-    return rating; 
   }
 
   Donation donate(Organisation org, int donationAmount, String donorDetails){ 
@@ -72,15 +66,18 @@ class Donor extends User {
 
 @override
   String toString(){
-  return "Donor ${super.toString()}\nRating: $rating";
-}
-
-  Future<List<Donation>> getDonations() async {
-    return await db.getDonations(id);
+    return "Donor ${super.toString()}\nRating: $rating";
   }
 
-  Future<List<Appointment>> getAppointments() async {
-    return await db.getAppointments(id);
+@override
+  String info(){
+    return 'rating: $rating';
   }
+
+  @override
+  Future<List<Interaction>> getInteractions(String type) async {
+    return await db.getInteractions(this, type);
+  }
+
   
 }

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
 
 import 'Interaction.dart';
 
@@ -10,9 +12,9 @@ class Donation extends Interaction {
 
   Donation(super.id, super.org, super.donor, this.transactionId, this.completionStatus, this.donationAmount, this.paymentMethod);
 
-  factory Donation.fromFirestore(DocumentSnapshot snapshot,){
+  factory Donation.fromFirestore(DocumentSnapshot snapshot,Organisation org, Donor donor){
       final data = snapshot.data() as Map<String, dynamic>;
-    Donation don = Donation(snapshot.id, data['org'], data['donor'], data['transactionId'], data['completionStatus'], data['donationAmount'], data['paymentMethod']);
+    Donation don = Donation(snapshot.id, org, donor, data['transactionId'], data['completionStatus'], data['donationAmount'], data['paymentMethod']);
     don.setDate(data['date'].toDate());
     return don;
   }
