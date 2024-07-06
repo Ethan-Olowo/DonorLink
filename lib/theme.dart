@@ -35,7 +35,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
-        foregroundColor: accentColor,
+        foregroundColor: Colors.white,
         textStyle: GoogleFonts.roboto(fontWeight: FontWeight.bold),
       ),
     ),
