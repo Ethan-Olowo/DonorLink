@@ -67,7 +67,7 @@ class _PageState extends State<ViewInteractions> {
                     itemCount: elements.length,
                     itemBuilder: (context, index) {
                       var element;
-                      if(widget.type=='Donations'){
+                      if(widget.type=='donation'){
                         element = elements[index] as Donation; 
                       }else{
                         element = elements[index] as Appointment; 

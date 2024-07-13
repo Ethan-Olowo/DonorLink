@@ -28,7 +28,7 @@ class InteractionView extends StatelessWidget {
             children: [
               const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 100,),
               const SizedBox(height: 20),              
-              if(type=='donation'&& New) Text('Donation Complete', style: Theme.of(context).textTheme.headlineSmall,),
+              if(type=='donation'&& New) Text('Donation Requested', style: Theme.of(context).textTheme.headlineSmall,),
               if(type=='appointment'&& New) Text('Appointment Requested', style: Theme.of(context).textTheme.headlineSmall,),
               if(type=='rating'&& New) Text('Thanks for the Feedback', style: Theme.of(context).textTheme.headlineSmall,),
               if(type=='donation'&& !New) Text('Donation', style: Theme.of(context).textTheme.headlineSmall,),
