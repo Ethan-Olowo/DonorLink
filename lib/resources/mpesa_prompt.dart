@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 Future<void> promptMpesaTransaction(
     int amount, String donorDetails, String orgPaymentDetails,
@@ -10,12 +11,12 @@ Future<void> promptMpesaTransaction(
   String consumerKey = REMOVED;
   String consumerSecret =
       REMOVED;
-  String shortCode = '112345';
-  String passkey = "YOUR_PASSKEY";
-  String callbackUrl = "YOUR_CALLBACK_URL";
+  var shortCode = REMOVED;
+  String passkey = REMOVED;
+  String callbackUrl = REMOVED;
 
-  String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  String password = base64Encode(utf8.encode(shortCode + passkey + timestamp));
+  String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+  String password = base64Encode(utf8.encode(shortCode.toString() + passkey + timestamp));
 
   Map<String, String> headers = {
     'Authorization':
@@ -33,8 +34,8 @@ Future<void> promptMpesaTransaction(
     "PartyB": shortCode,
     "PhoneNumber": donorDetails,
     "CallBackURL": callbackUrl,
-    "AccountReference": "Donation",
-    "TransactionDesc": "Donation"
+    "AccountReference": "DonorLink Donation",
+    "TransactionDesc": "DonorLink Donation"
   };
 
   http.Response response = await client.post(
