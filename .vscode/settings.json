@@ -1,15 +1,19 @@
 {
-    "cSpell.words": [
-        "Admincontroller",
-        "Donorcontroller",
-        "donorlink",
-        "Financials",
-        "Organisation",
-        "Organisations",
-        "Orgcontroller",
-        "orgid",
-        "Revcontroller",
-        "Splashscreen"
-    ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+  "cSpell.words": [
+    "Admincontroller",
+    "Donorcontroller",
+    "donorlink",
+    "Financials",
+    "isdigit",
+    "Organisation",
+    "Organisations",
+    "Orgcontroller",
+    "orgid",
+    "Revcontroller",
+    "Splashscreen"
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true
 }
