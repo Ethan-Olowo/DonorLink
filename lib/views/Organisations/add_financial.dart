@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,10 +22,7 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -32,11 +30,14 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Add Financial Document', style: Theme.of(context).textTheme.headlineSmall),
+              Text('Add Financial Document',
+                  style: Theme.of(context).textTheme.headlineSmall),
               Center(
                 child: ElevatedButton(
                   onPressed: _isUploading ? null : _uploadFile,
-                  child: _isUploading ? const CircularProgressIndicator() : const Text('Upload PDF'),
+                  child: _isUploading
+                      ? const CircularProgressIndicator()
+                      : const Text('Upload PDF'),
                 ),
               ),
             ],
@@ -62,7 +63,9 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
         String fileName = result.files.single.name;
 
         try {
-          Reference storageRef = FirebaseStorage.instance.ref().child('financial_documents/$fileName');
+          Reference storageRef = FirebaseStorage.instance
+              .ref()
+              .child('financial_documents/$fileName');
           UploadTask uploadTask = storageRef.putFile(File(filePath));
           TaskSnapshot taskSnapshot = await uploadTask;
           String downloadURL = await taskSnapshot.ref.getDownloadURL();
@@ -73,10 +76,12 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
           );
           await newFinancial.upload();
 
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Financial Document Added')));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Financial Document Added')));
           Navigator.pop(context);
         } catch (error) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to upload file: $error')));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Failed to upload file: $error')));
         } finally {
           setState(() {
             _isUploading = false;
@@ -86,9 +91,9 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
         setState(() {
           _isUploading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No file selected')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('No file selected')));
       }
     }
   }
-
 }

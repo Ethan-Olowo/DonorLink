@@ -1,6 +1,7 @@
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Review.dart';
 import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Reviewers/review_confirmation.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,7 @@ class _ReviewOrgState extends State<ReviewOrg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -34,40 +32,46 @@ class _ReviewOrgState extends State<ReviewOrg> {
             children: [
               Text('Review', style: Theme.of(context).textTheme.headlineSmall),
               DropdownButtonFormField<String>(
-                items: const [
-                  DropdownMenuItem(value: 'Approve', child: Text('Approve')),
-                  DropdownMenuItem(value: 'Reject', child: Text('Reject')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _approvalStatus = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Approval',
-                ),
-                validator: nullValidator
-              ),
+                  items: const [
+                    DropdownMenuItem(value: 'Approve', child: Text('Approve')),
+                    DropdownMenuItem(value: 'Reject', child: Text('Reject')),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _approvalStatus = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Approval',
+                  ),
+                  validator: nullValidator),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _commentController,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  labelText: 'Comment',
-                ),
-                validator: nullValidator
-              ),
+                  controller: _commentController,
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                    labelText: 'Comment',
+                  ),
+                  validator: nullValidator),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    bool app = _approvalStatus=='Approve';
-                    Review? rev = await widget.user.reviewOrganisation(widget.org, app, _commentController.text);
-                    if(rev != null){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewConfirmation(user: widget.user, rev: rev,))); 
-                    }else{
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to Save Review')));
-                    } 
+                    bool app = _approvalStatus == 'Approve';
+                    Review? rev = await widget.user.reviewOrganisation(
+                        widget.org, app, _commentController.text);
+                    if (rev != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReviewConfirmation(
+                                    user: widget.user,
+                                    rev: rev,
+                                  )));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Failed to Save Review')));
+                    }
                   }
                 },
                 child: const Text('Submit'),

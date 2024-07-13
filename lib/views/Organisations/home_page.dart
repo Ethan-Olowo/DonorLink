@@ -1,4 +1,5 @@
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Organisations/organisation_account.dart';
 import 'package:donorlink/views/Organisations/view_interactions.dart';
 import 'package:donorlink/views/Organisations/view_financials.dart';
@@ -12,12 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(
-          image: AssetImage('assets/images/NamedLogo.png'),
-          height: 48,
-        ),
+      appBar: Bar(
         leading: IconButton(
           icon: const Icon(Icons.account_circle),
           onPressed: () {

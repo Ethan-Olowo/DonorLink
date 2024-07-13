@@ -1,5 +1,5 @@
-
 import 'package:donorlink/Models/Admin.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/admin_account.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +16,13 @@ class EditAccount extends StatefulWidget {
 class _EditAccountState extends State<EditAccount> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
-  late TextEditingController _phoneController;  
+  late TextEditingController _phoneController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.user.name);
-    _phoneController = TextEditingController(text: widget.user.phone);   
+    _phoneController = TextEditingController(text: widget.user.phone);
   }
 
   @override
@@ -36,44 +36,42 @@ class _EditAccountState extends State<EditAccount> {
     if (_formKey.currentState!.validate()) {
       widget.user.name = _nameController.text;
       widget.user.phone = _phoneController.text;
-      
-      await widget.user.updateUser()?
-        Navigator.push(
+
+      await widget.user.updateUser()
+          ? Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => AdminAccount(user: widget.user),
               ),
             )
-        :ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to Save Changes')));
-        
+          : ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to Save Changes')));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              Center(child: Text('Edit Account', style: Theme.of(context).textTheme.headlineSmall,)),
+              Center(
+                  child: Text(
+                'Edit Account',
+                style: Theme.of(context).textTheme.headlineSmall,
+              )),
               TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: nullValidator
-              ),
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                  validator: nullValidator),
               TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(labelText: 'Phone'),
-                validator: phoneValidator
-              ),
+                  controller: _phoneController,
+                  decoration: const InputDecoration(labelText: 'Phone'),
+                  validator: phoneValidator),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateAdmin,

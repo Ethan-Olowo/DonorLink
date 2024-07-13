@@ -2,6 +2,7 @@ import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ViewInteraction extends StatelessWidget {
@@ -12,16 +13,16 @@ class ViewInteraction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Center(child: Column(children: [  
-          if(inter is Donation)Text('Donation'),
-          if(inter is Appointment)Text('Appointment'),
-          Text(inter.toString())])),),
+        child: Center(
+            child: Column(children: [
+          if (inter is Donation) Text('Donation'),
+          if (inter is Appointment) Text('Appointment'),
+          Text(inter.toString())
+        ])),
+      ),
     );
   }
 }

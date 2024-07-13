@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/User.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/home_page.dart';
 import 'package:donorlink/views/Admin/view_user.dart';
 import 'package:flutter/material.dart';
@@ -9,22 +10,26 @@ class ViewUsers extends StatefulWidget {
   final String? type;
   const ViewUsers({super.key, required this.user, required this.type});
 
-    @override
+  @override
   _PageState createState() => _PageState();
 }
 
 class _PageState extends State<ViewUsers> {
   String _searchText = "";
-   late Future<List<User>> _usersFuture;
+  late Future<List<User>> _usersFuture;
 
   @override
   void initState() {
     super.initState();
-    if(widget.type=='organisation') {
+    if (widget.type == 'organisation') {
       _usersFuture = widget.user.getOrganisations();
-    } else if(widget.type=='reviewer'){_usersFuture = widget.user.getReviewers();
-    }else if(widget.type=='donor'){_usersFuture = widget.user.getOrganisations();
-    }else{ _usersFuture = widget.user.getAllUsers();}
+    } else if (widget.type == 'reviewer') {
+      _usersFuture = widget.user.getReviewers();
+    } else if (widget.type == 'donor') {
+      _usersFuture = widget.user.getOrganisations();
+    } else {
+      _usersFuture = widget.user.getAllUsers();
+    }
   }
 
   Future<void> _reloadOrganisations() async {
@@ -36,20 +41,20 @@ class _PageState extends State<ViewUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-        leading: widget.type==null? IconButton(
-          icon: const Icon(Icons.home),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(user: widget.user),
-              ),
-            );
-          },
-        ):null,
+      appBar: Bar(
+        leading: widget.type == null
+            ? IconButton(
+                icon: const Icon(Icons.home),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(user: widget.user),
+                    ),
+                  );
+                },
+              )
+            : null,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -76,12 +81,15 @@ class _PageState extends State<ViewUsers> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return  Center(child: Text('No ${widget.type} found.'));
+                    return Center(child: Text('No ${widget.type} found.'));
                   }
 
                   List<User> users = snapshot.data!;
-                  users = users.where((org) =>
-                  org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  users = users
+                      .where((org) => org.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: users.length,
@@ -89,8 +97,7 @@ class _PageState extends State<ViewUsers> {
                       return Card(
                         child: ListTile(
                           title: Text('${users[index].name}'),
-                          subtitle: 
-                            Text(users[index].info()),
+                          subtitle: Text(users[index].info()),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -109,7 +116,6 @@ class _PageState extends State<ViewUsers> {
                 },
               ),
             ),
-            
           ],
         ),
       ),

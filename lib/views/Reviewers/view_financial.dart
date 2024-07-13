@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
@@ -12,11 +13,7 @@ class FinancialDocument extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-        //title: const Text('Financial Document'),
-      ),
+      appBar: Bar(),
       body: fin.getLocation() != null
           ? PDFView(
               filePath: fin.getLocation(),

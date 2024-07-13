@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Donors/donor_account.dart';
 import 'package:donorlink/views/Donors/view_Interactions.dart';
 import 'package:donorlink/views/Donors/view_organisation.dart';
@@ -35,9 +36,7 @@ class _HomePageState extends State<HomePage> {
     String? name = widget.user.name;
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+      appBar: Bar(
         leading: IconButton(
           icon: const Icon(Icons.account_circle),
           onPressed: () {
@@ -70,7 +69,10 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewInteractions(user: widget.user, type: 'donation',),
+                        builder: (context) => ViewInteractions(
+                          user: widget.user,
+                          type: 'donation',
+                        ),
                       ),
                     );
                   },
@@ -81,7 +83,10 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ViewInteractions(user: widget.user, type: 'appointment',),
+                        builder: (context) => ViewInteractions(
+                          user: widget.user,
+                          type: 'appointment',
+                        ),
                       ),
                     );
                   },
@@ -96,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                 prefixIcon: Icon(Icons.search),
               ),
               // Update _searchText on user input change
-              onChanged: (text) { 
+              onChanged: (text) {
                 setState(() {
                   _searchText = text;
                 });
@@ -115,8 +120,11 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   List<Organisation> organisations = snapshot.data!;
-                  organisations = organisations.where((org) =>
-                  org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  organisations = organisations
+                      .where((org) => org.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: organisations.length,

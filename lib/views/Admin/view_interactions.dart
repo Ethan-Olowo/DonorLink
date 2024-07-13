@@ -2,6 +2,7 @@ import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/User.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/view_interaction.dart';
 import 'package:donorlink/resources/monthly_interactions_chart.dart';
 import 'package:flutter/material.dart';
@@ -44,19 +45,15 @@ class _PageState extends State<ViewInteractions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(
-          image: AssetImage('assets/images/NamedLogo.png'),
-          height: 48,
-        ),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Text('View ${widget.type ?? 'Interactions'}'),
-            if(widget.type != null) MonthlyInteractionsChart(org: widget.user as Organisation, type: widget.type!),
+            if (widget.type != null)
+              MonthlyInteractionsChart(
+                  org: widget.user as Organisation, type: widget.type!),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Search ${widget.type ?? 'Interactions'}',

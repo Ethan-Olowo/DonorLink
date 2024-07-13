@@ -2,6 +2,7 @@ import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
 import 'package:string_capitalize/string_capitalize.dart';
@@ -9,9 +10,13 @@ import 'package:string_capitalize/string_capitalize.dart';
 class ViewInteractions extends StatefulWidget {
   final Donor user;
   final String type;
-  const ViewInteractions({super.key, required this.user, required this.type,});
+  const ViewInteractions({
+    super.key,
+    required this.user,
+    required this.type,
+  });
 
-    @override
+  @override
   _PageState createState() => _PageState();
 }
 
@@ -22,26 +27,26 @@ class _PageState extends State<ViewInteractions> {
   @override
   void initState() {
     super.initState();
-    _elementsFuture = widget.user.getInteractions(widget.type); 
+    _elementsFuture = widget.user.getInteractions(widget.type);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('View ${widget.type}', style: Theme.of(context).textTheme.headlineSmall),
+            Text('View ${widget.type}',
+                style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Search',
                 prefixIcon: Icon(Icons.search),
               ),
-              onChanged: (text) { // Update _searchText on user input change
+              onChanged: (text) {
+                // Update _searchText on user input change
                 setState(() {
                   _searchText = text;
                 });
@@ -56,32 +61,46 @@ class _PageState extends State<ViewInteractions> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No ${widget.type.capitalize()} records found.'));
+                    return Center(
+                        child: Text(
+                            'No ${widget.type.capitalize()} records found.'));
                   }
 
                   List<Interaction> elements = snapshot.data!;
-                  elements = elements.where((app) =>
-                  app.org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  elements = elements
+                      .where((app) => app.org.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: elements.length,
                     itemBuilder: (context, index) {
                       var element;
-                      if(widget.type=='donation'){
-                        element = elements[index] as Donation; 
-                      }else{
-                        element = elements[index] as Appointment; 
+                      if (widget.type == 'donation') {
+                        element = elements[index] as Donation;
+                      } else {
+                        element = elements[index] as Appointment;
                       }
                       return Card(
                         child: ListTile(
                           title: Text('${elements[index].org.name}'),
-                          subtitle: element is Appointment ? 
-                              Text('Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
-                              :Text('Donation Date: ${element.date}\nAmount: ${element.donationAmount}'),
+                          subtitle: element is Appointment
+                              ? Text(
+                                  'Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
+                              : Text(
+                                  'Donation Date: ${element.date}\nAmount: ${element.donationAmount}'),
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => InteractionView(user: widget.user, type: widget.type, element: element, New: false,),),
+                              MaterialPageRoute(
+                                builder: (context) => InteractionView(
+                                  user: widget.user,
+                                  type: widget.type,
+                                  element: element,
+                                  New: false,
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -91,11 +110,9 @@ class _PageState extends State<ViewInteractions> {
                 },
               ),
             ),
-          
           ],
         ),
       ),
     );
   }
-  
 }

@@ -1,6 +1,7 @@
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Donors/view_financial.dart';
 import 'package:flutter/material.dart';
 
@@ -30,13 +31,7 @@ class _PageState extends State<ViewFinancials> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(
-          image: AssetImage('assets/images/NamedLogo.png'),
-          height: 48,
-        ),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

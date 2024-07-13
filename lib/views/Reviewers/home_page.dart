@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Reviewers/reviewer_account.dart';
 import 'package:donorlink/views/Reviewers/view_organisation.dart';
 import 'package:donorlink/views/Reviewers/view_organisations.dart';
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
   final Reviewer user;
   const HomePage({super.key, required this.user});
 
-@override
+  @override
   _HomePageState createState() => _HomePageState();
 }
 
@@ -32,9 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+      appBar: Bar(
         leading: IconButton(
           icon: const Icon(Icons.account_circle),
           onPressed: () {
@@ -57,7 +56,8 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('Welcome ${widget.user.name}', style: const TextStyle(fontSize: 24)),
+            Text('Welcome ${widget.user.name}',
+                style: const TextStyle(fontSize: 24)),
             const Text('Pending Organisations'),
             const SizedBox(height: 20),
             const TextField(
@@ -79,8 +79,11 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   List<Organisation> organisations = snapshot.data!;
-                  organisations = organisations.where((org) =>
-                  org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  organisations = organisations
+                      .where((org) => org.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: organisations.length,
@@ -108,13 +111,14 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewOrganisations(user: widget.user,),
+                    builder: (context) => ViewOrganisations(
+                      user: widget.user,
+                    ),
                   ),
                 );
               },

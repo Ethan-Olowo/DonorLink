@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Reviewers/home_page.dart';
 import 'package:donorlink/views/Reviewers/view_organisation.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,13 @@ class ViewOrganisations extends StatefulWidget {
   final Reviewer user;
   const ViewOrganisations({super.key, required this.user});
 
-    @override
+  @override
   _PageState createState() => _PageState();
 }
 
 class _PageState extends State<ViewOrganisations> {
   String _searchText = "";
-   late Future<List<Organisation>> _organisationsFuture;
+  late Future<List<Organisation>> _organisationsFuture;
 
   @override
   void initState() {
@@ -31,9 +32,7 @@ class _PageState extends State<ViewOrganisations> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+      appBar: Bar(
         leading: IconButton(
           icon: const Icon(Icons.home),
           onPressed: () {
@@ -75,8 +74,11 @@ class _PageState extends State<ViewOrganisations> {
                   }
 
                   List<Organisation> organisations = snapshot.data!;
-                  organisations = organisations.where((org) =>
-                  org.name!.toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  organisations = organisations
+                      .where((org) => org.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: organisations.length,

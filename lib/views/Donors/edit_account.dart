@@ -1,4 +1,5 @@
 import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Donors/donor_account.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
@@ -55,10 +56,7 @@ class _EditAccountState extends State<EditAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

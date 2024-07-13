@@ -1,6 +1,7 @@
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Donors/donation_loading.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,7 @@ class Donate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        title: const Image(
-          image: AssetImage('assets/images/NamedLogo.png'),
-          height: 48,
-        ),
-      ),
+      appBar: Bar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
