@@ -47,14 +47,18 @@ class Donate extends StatelessWidget {
                 ])),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
+              onPressed: (){
                 if (_formKey.currentState!.validate()) {
                   final donationAmount = int.parse(_amountController.text);
                   final donorDetails = _paymentDetailsController.text;
 
                   Donation don = Donation(
                       '', org, user, '', false, donationAmount, donorDetails);
-                  DonationLoading(don, user, context);
+                      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DonationLoading(don, user, context)));
                 }
               },
               child: const Text('Donate'),

@@ -17,7 +17,7 @@ class DonationLoading extends LoadingScreen {
   });
 
   @override
-  String message = 'Waiting for Donation response';
+  final String message = 'Waiting for Donation response';
   @override
   Future<void> await() async {
     late Donation? donation;
