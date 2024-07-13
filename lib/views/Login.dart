@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  dynamic user;
+  dynamic user; //Delete
   String? errorMessage; // State variable for error messages
 
   @override
@@ -106,12 +106,12 @@ class _LoginState extends State<Login> {
               ),
               const Text('Don\'t Have an account?'),
               ElevatedButton(
-                key: const Key('createAccountButton'), // added key
+                key: const Key('createAccountButton'),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Splashscreen()));
+                          builder: (context) => const Splashscreen()));//Forwards User to select User type Screen
                 },
                 child: const Text('Create an Account'),
               ),
