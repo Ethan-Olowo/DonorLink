@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donorlink/Database/admin_controller.dart';
+import 'package:donorlink/Models/Approval.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
@@ -20,7 +21,15 @@ class Admin extends User {
       );
     }
 
-  void approveReviewer(Reviewer reviewer) { /*...*/ }
+  void approveReviewer(Reviewer reviewer) { 
+    reviewer.approval = 'approved';
+    var approval = Approval('',this, reviewer, DateTime.now());
+    (db as Admincontroller).approveReviewer(this, reviewer, approval);
+   }
+   void rejectReviewer(Reviewer reviewer) {
+    reviewer.approval = 'rejected';
+    (db as Admincontroller).rejectReviewer( reviewer);
+    }
   
   Future<List<Review>> getReviews(Organisation? org) async { 
     return await (db as Admincontroller).getReviews(org); 

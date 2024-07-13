@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donorlink/Database/rev_controller.dart';
-
 import 'User.dart';
 import 'Organisation.dart';
 import 'Review.dart';
@@ -10,9 +9,9 @@ class Reviewer extends User {
   var db = RevController();
   String approval;
 
-  Reviewer(super.id, super.name, super.phone, super.email, this.approval);
+  Reviewer(super.id, super.name, super.phone, super.email, this.approval,);
 
-  factory Reviewer.fromFirestore(DocumentSnapshot snapshot,){
+  factory Reviewer.fromFirestore(DocumentSnapshot snapshot){
       final data = snapshot.data() as Map<String, dynamic>;
       return Reviewer(
         snapshot.id, data['name'], data['phone'], data['email'], data['approval'],
@@ -51,8 +50,10 @@ class Reviewer extends User {
 
   @override
   String info(){
-    return 'Approval $approval';
+    String info= 'Approval $approval ';
+    return info;
   }
+
 
   Future<List<Organisation>> getRequestedOrganisations() async{ 
     var orgs = await getOrganisations();
