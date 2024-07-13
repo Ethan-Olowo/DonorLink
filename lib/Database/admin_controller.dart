@@ -1,5 +1,7 @@
 import 'package:donorlink/Database/database.dart';
+import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Appointment.dart';
+import 'package:donorlink/Models/Approval.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
@@ -12,6 +14,28 @@ import 'package:donorlink/Models/User.dart';
 
 class Admincontroller extends Database {
 
+  approveReviewer(Admin admin, Reviewer reviewer, Approval approval) async {
+    final revDoc = db.collection("Users").doc(reviewer.id);
+
+    return await db.runTransaction((transaction) async {
+      transaction.update(revDoc, reviewer.toFirestore());
+      db.collection("Approvals").add(approval.toFirestore());
+    }).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+
+  rejectReviewer(Reviewer reviewer) async {
+    final revDoc = db.collection("Users").doc(reviewer.id);
+    return await db.runTransaction((transaction) async {
+      transaction.update(revDoc, {"approval": 'rejected'});          
+    }).then(
+      (value) =>  true,
+      onError: (e) => false,
+    );
+  }
+  
   @override
   Future<List<Interaction>> getInteractions(User user, String type) async {
     List<Interaction> inters=[];
