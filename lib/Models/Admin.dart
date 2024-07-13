@@ -21,10 +21,10 @@ class Admin extends User {
       );
     }
 
-  void approveReviewer(Reviewer reviewer) { 
+  Future<Reviewer?> approveReviewer(Reviewer reviewer) async{ 
     reviewer.approval = 'approved';
     var approval = Approval('',this, reviewer, DateTime.now());
-    (db as Admincontroller).approveReviewer(this, reviewer, approval);
+    return await (db as Admincontroller).approveReviewer(this, reviewer, approval);
    }
    void rejectReviewer(Reviewer reviewer) {
     reviewer.approval = 'rejected';
