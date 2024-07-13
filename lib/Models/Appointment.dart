@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:intl/intl.dart';
-
-import 'Interaction.dart';
 
 class Appointment extends Interaction {
   DateTime? approvalDate;
@@ -49,7 +48,7 @@ class Appointment extends Interaction {
   
   @override
   String toString(){
-    return "${super.toString()} \nAppointment date: $appointmentDate \nReason: $reason";
+    return "${super.toString()} \nAppointment date: $appointmentDate \nReason: $reason \nApproval: ${approvalStatus? "Approved" : "Not Approved"}";
   }
 
   @override
