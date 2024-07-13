@@ -50,7 +50,7 @@ class _PageState extends State<ViewInteraction> {
                 }) 
                 :ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to Save Changes'))); 
               },
-              child: const Text('Confirm'),
+              child: const Text('Approve'),
             ),
             if(app.approvalStatus==false) ElevatedButton(
               onPressed: () {

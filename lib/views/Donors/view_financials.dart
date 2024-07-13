@@ -7,9 +7,13 @@ import 'package:flutter/material.dart';
 class ViewFinancials extends StatefulWidget {
   final Donor user;
   final Organisation org;
-  const ViewFinancials({super.key, required this.user, required this.org,});
+  const ViewFinancials({
+    super.key,
+    required this.user,
+    required this.org,
+  });
 
-    @override
+  @override
   _PageState createState() => _PageState();
 }
 
@@ -20,33 +24,38 @@ class _PageState extends State<ViewFinancials> {
   @override
   void initState() {
     super.initState();
-    _financialsFuture = widget.org.getFinancials(); 
+    _financialsFuture = widget.org.getFinancials();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+        title: const Image(
+          image: AssetImage('assets/images/NamedLogo.png'),
+          height: 48,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-          Text('${widget.org.name} Financials', style: Theme.of(context).textTheme.headlineSmall),
+            Text('${widget.org.name} Financials',
+                style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Search Date',
                 prefixIcon: Icon(Icons.search),
               ),
               // Update _searchText on user input change
-              onChanged: (text) { 
+              onChanged: (text) {
                 setState(() {
                   _searchText = text;
                 });
               },
             ),
-                        Expanded(
+            Expanded(
               child: FutureBuilder<List<Financial>>(
                 future: _financialsFuture,
                 builder: (context, snapshot) {
@@ -55,12 +64,17 @@ class _PageState extends State<ViewFinancials> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No Financial documents found.'));
+                    return const Center(
+                        child: Text('No Financial documents found.'));
                   }
 
                   List<Financial> fins = snapshot.data!;
-                  fins = fins.where((fin) =>
-                  fin.getDate().toLowerCase().contains(_searchText.toLowerCase())).toList();
+                  fins = fins
+                      .where((fin) => fin
+                          .getDate()
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: fins.length,
@@ -71,7 +85,12 @@ class _PageState extends State<ViewFinancials> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => FinancialDocument(user: widget.user, fin: fins[index],),),
+                              MaterialPageRoute(
+                                builder: (context) => FinancialDocument(
+                                  user: widget.user,
+                                  fin: fins[index],
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -81,11 +100,9 @@ class _PageState extends State<ViewFinancials> {
                 },
               ),
             ),
-          
           ],
         ),
       ),
     );
   }
-  
 }

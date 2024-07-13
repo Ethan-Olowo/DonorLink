@@ -2,9 +2,11 @@ import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Rating.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/view_interaction.dart';
 import 'package:flutter/material.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 
 class ViewInteractions extends StatefulWidget {
   final Reviewer user;
@@ -36,9 +38,10 @@ class _PageState extends State<ViewInteractions> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text('View ${widget.type.capitalize()}s', style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Search ${widget.type}',
+                labelText: 'Search ${widget.type.capitalize()}',
                 prefixIcon: const Icon(Icons.search),
               ),
               // Update _searchText on user input change
@@ -71,8 +74,10 @@ class _PageState extends State<ViewInteractions> {
                         child: ListTile(
                           title: Text(elements[index].getDate()),
                           subtitle: widget.type == 'appointment' ?
-                              Text('Appointment Date: ${elements[index].getDate()}\nApproval: ${(elements[index] as Appointment).approvalStatus}')
-                              :Text('Donation Date: ${elements[index].getDate()}\nAmount: ${(elements[index] as Donation).donationAmount}'),
+                              Text('Approval: ${(elements[index] as Appointment).approvalStatus}')
+                              :widget.type == 'donation' ?
+                              Text('Amount: ${(elements[index] as Donation).donationAmount}'):
+                              Text('Rating: ${(elements[index] as Rating).rating}'),
                           onTap: () {
                             Navigator.push(
                               context,

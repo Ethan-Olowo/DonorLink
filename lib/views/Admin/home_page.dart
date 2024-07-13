@@ -7,7 +7,7 @@ import 'package:donorlink/views/Admin/view_interactions.dart';
 import 'package:donorlink/views/Admin/view_reviews.dart';
 import 'package:donorlink/views/Admin/view_user.dart';
 import 'package:donorlink/views/Admin/view_users.dart';
-import 'package:donorlink/views/templates/report_chart.dart';
+import 'package:donorlink/resources/report_chart.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

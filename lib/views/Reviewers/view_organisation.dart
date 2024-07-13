@@ -27,16 +27,29 @@ class ViewOrganisation extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewInteractions(user: user, org: org, type: 'Donations', )));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewInteractions(user: user, org: org, type: 'donation', )));
               },
               child: const Text('View Donations'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewInteractions(user: user, org: org, type: 'Appointments', )));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewInteractions(user: user, org: org, type: 'appointment', )));
               },
               child: const Text('View Appointments'),
             ),
+            ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewInteractions(
+                                  user: user,
+                                  org: org,
+                                  type: 'rating',
+                                )));
+                  },
+                  child: const Text('View ratings'),
+                ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ViewFinancials(user: user, org: org,)));

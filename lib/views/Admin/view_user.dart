@@ -21,6 +21,7 @@ class ViewUser extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(child: Column(
+          crossAxisAlignment:CrossAxisAlignment.center,
           children: [
             Text(user.toString()),
             const SizedBox(height: 20),
@@ -54,9 +55,11 @@ class ViewUser extends StatelessWidget {
               child: const Text('View Reviews'),
             ),
 
-            if(user is Reviewer)Column(children: [
+            if(user is Reviewer && (user as Reviewer).approval!='approved')Column(children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: (
+                  ) {
+                    admin.approveReviewer(user as Reviewer);
                   },
                   child: const Text('Approve'),
                 ),
