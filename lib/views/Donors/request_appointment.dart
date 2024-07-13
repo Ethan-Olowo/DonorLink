@@ -2,6 +2,7 @@ import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/views/Donors/view_interaction.dart';
+import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 
 class RequestAppointment extends StatefulWidget {
@@ -37,12 +38,7 @@ class RequestAppointmentState extends State<RequestAppointment> {
                 TextFormField(
                   controller: _reasonController,
                   decoration: const InputDecoration(labelText: 'Reason'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a reason';
-                    }       
-                    return null;
-                  },
+                  validator: nullValidator
                 ),
                 TextFormField(
                   controller: _dateController,
@@ -68,12 +64,7 @@ class RequestAppointmentState extends State<RequestAppointment> {
                       });
                     }
                   },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select an appointment date';
-                    }
-                    return null;
-                  },
+                  validator: nullValidator
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
