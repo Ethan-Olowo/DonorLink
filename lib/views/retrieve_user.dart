@@ -19,7 +19,7 @@ class RetrieveUser extends LoadingScreen {
   RetrieveUser(this.userId, this.context, {super.key});
 
   @override
-  String message = 'logging in...';
+  final String message = 'logging in...';
 
   @override
   Future<void> await() async {

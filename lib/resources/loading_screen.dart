@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class LoadingScreen extends StatefulWidget {
   LoadingScreen({super.key});
 
-  String message = 'Loading...';
+  final String message = 'Loading...';
 
   Future<void> await() async {
     throw UnimplementedError();
