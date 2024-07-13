@@ -43,8 +43,7 @@ class _PageState extends State<OrgAccount> {
               
             ),
             const SizedBox(height: 20),
-            Text(widget.org.toString()),
-            Text('Approval: ${widget.org.approval}'),
+            Text('${widget.org.toString()} \nApproval: ${widget.org.approval}'),
             const SizedBox(height: 20),
 
             if (widget.org.approval == 'requested') ElevatedButton(
@@ -73,7 +72,7 @@ class _PageState extends State<OrgAccount> {
                   widget.org.approval = 'pending';
                 }
               },
-              child: const Text('Request Approval'),
+              child: const Text('Request Review'),
             ),
             if (widget.org.approval == 'approved'|| widget.org.approval == 'pending') ElevatedButton(
               onPressed: () {
@@ -81,7 +80,7 @@ class _PageState extends State<OrgAccount> {
               },
               child: const Text('Edit'),
             ),
-            if (widget.org.approval == 'requested')Row(
+            if (widget.org.approval == 'requested')Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
