@@ -1,5 +1,6 @@
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/reviewer_account.dart';
+import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 
 class EditAccount extends StatefulWidget {
@@ -15,7 +16,6 @@ class _EditAccountState extends State<EditAccount> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
-  late TextEditingController _emailController;
   
 
 
@@ -24,7 +24,6 @@ class _EditAccountState extends State<EditAccount> {
     super.initState();
     _nameController = TextEditingController(text: widget.reviewer.name);
     _phoneController = TextEditingController(text: widget.reviewer.phone);
-    _emailController = TextEditingController(text: widget.reviewer.email);
    
   }
 
@@ -32,15 +31,13 @@ class _EditAccountState extends State<EditAccount> {
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
-  Future<void> _updateOrganisation() async {
+  Future<void> _updateReviewer() async {
     if (_formKey.currentState!.validate()) {
       widget.reviewer.name = _nameController.text;
       widget.reviewer.phone = _phoneController.text;
-      //widget.org.email = _emailController.text;
       
       await widget.reviewer.updateUser()?
         Navigator.push(
@@ -72,39 +69,16 @@ class _EditAccountState extends State<EditAccount> {
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
+                validator: nullValidator
               ),
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Phone'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a phone number';
-                  }
-                  return null;
-                },
-              ),
-              
-              /*TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  return null;
-                },
-              ),*/
-              
-              
+                validator: phoneValidator
+              ),        
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _updateOrganisation,
+                onPressed: _updateReviewer,
                 child: const Text('Update'),
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Review.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/views/Reviewers/review_confirmation.dart';
+import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 
 class ReviewOrg extends StatefulWidget {
@@ -45,12 +46,7 @@ class _ReviewOrgState extends State<ReviewOrg> {
                 decoration: const InputDecoration(
                   labelText: 'Approval',
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select an approval status';
-                  }
-                  return null;
-                },
+                validator: nullValidator
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -59,12 +55,7 @@ class _ReviewOrgState extends State<ReviewOrg> {
                 decoration: const InputDecoration(
                   labelText: 'Comment',
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a comment';
-                  }
-                  return null;
-                },
+                validator: nullValidator
               ),
               const SizedBox(height: 20),
               ElevatedButton(

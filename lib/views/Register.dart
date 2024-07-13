@@ -1,3 +1,4 @@
+import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Donor.dart';
@@ -29,139 +30,115 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userType == 'Admin') {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text('${widget.userType} Registration'),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          body: const Center(
-            child: Text('Cannot Create an account for this User type \nTry Logging in'),
-          ));
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 50,
-          title: Text('${widget.userType} Registration'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        key: const Key('appBar'),
+        toolbarHeight: 50,
+        title: Text('${widget.userType} Registration'),
+        leading: IconButton(
+          key: const Key('backButton'),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Image(
-                    image: AssetImage('assets/images/Logo.png'),
-                    height: 150,
-                  ),
-                  const SizedBox(height: 20),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _nameController,
-                          decoration:
-                              const InputDecoration(labelText: 'Name'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your name';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _emailController,
-                          decoration:
-                              const InputDecoration(labelText: 'Email'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _phoneController,
-                          decoration:
-                              const InputDecoration(labelText: 'Phone'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _passwordController,
-                          decoration:
-                              const InputDecoration(labelText: 'Password'),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _confirmPasswordController,
-                          decoration: const InputDecoration(
-                              labelText: 'Confirm Password'),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
-                            }
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (_errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Image(
+                  key: Key('logoImage'),
+                  image: AssetImage('assets/images/Logo.png'),
+                  height: 150,
+                ),
+                const SizedBox(height: 20),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        key: const Key('nameField'),
+                        controller: _nameController,
+                        decoration: const InputDecoration(labelText: 'Name'),
+                        validator: nullValidator,
                       ),
-                    ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        createAccount(
-                          _emailController.text,
-                          _passwordController.text,
-                          _nameController.text,
-                          _phoneController.text,
-                        );
-                      }
-                    },
-                    child: const Text('Register'),
+                      TextFormField(
+                        key: const Key('emailField'),
+                        controller: _emailController,
+                        decoration: const InputDecoration(labelText: 'Email'),
+                        validator: emailValidator,
+                      ),
+                      TextFormField(
+                        key: const Key('phoneField'),
+                        controller: _phoneController,
+                        decoration: const InputDecoration(labelText: 'Phone'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        key: const Key('passwordField'),
+                        controller: _passwordController,
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
+                        obscureText: true,
+                        validator: passwordValidator,
+                      ),
+                      TextFormField(
+                        key: const Key('confirmPasswordField'),
+                        controller: _confirmPasswordController,
+                        decoration: const InputDecoration(
+                            labelText: 'Confirm Password'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                if (_errorMessage != null)
+                  Padding(
+                    key: const Key('errorText'),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(
+                      _errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ElevatedButton(
+                  key: const Key('registerButton'),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      createAccount(
+                        _emailController.text,
+                        _passwordController.text,
+                        _nameController.text,
+                        _phoneController.text,
+                      );
+                    }
+                  },
+                  child: const Text('Register'),
+                ),
+              ],
             ),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   Future<void> createAccount(
@@ -205,8 +182,8 @@ class _RegisterState extends State<Register> {
             );
             break;
           case 'Reviewer':
-            user = Reviewer(
-                credential.user!.uid, name, phone, email, 'pending');
+            user =
+                Reviewer(credential.user!.uid, name, phone, email, 'pending');
             db.addUser(user);
             Navigator.push(
               context,

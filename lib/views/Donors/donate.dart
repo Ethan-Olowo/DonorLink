@@ -1,7 +1,8 @@
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/views/Donors/view_interaction.dart';
+import 'package:donorlink/views/Donors/donation_loading.dart';
+import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 
 class Donate extends StatelessWidget {
@@ -18,56 +19,42 @@ class Donate extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 50,
-        title: const Image(image: AssetImage('assets/images/NamedLogo.png'), height: 48,),
+        title: const Image(
+          image: AssetImage('assets/images/NamedLogo.png'),
+          height: 48,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Text('Donate To ${org.name}', style: Theme.of(context).textTheme.headlineSmall),
+                key: _formKey,
+                child: Column(children: [
+                  Text('Donate To ${org.name}',
+                      style: Theme.of(context).textTheme.headlineSmall),
                   Text('Donation Method: ${org.paymentMethod}'),
                   TextFormField(
-                    controller: _amountController,
-                    decoration: const InputDecoration(labelText: 'Amount'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter an amount.'; // Return an error message if the amount is empty
-                      }if (value is! int){
-                        return 'Please enter a whole number amount'; // Return an error message if the amount is not
-                      }
-                      return null; 
-                    },
-                  ),
+                      controller: _amountController,
+                      decoration: const InputDecoration(labelText: 'Amount'),
+                      keyboardType: TextInputType.number,
+                      validator: numberValidator),
                   TextFormField(
-                    controller: _paymentDetailsController,
-                    decoration: const InputDecoration(labelText: 'Payment Details'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your payment details.'; // Return an error message if the payment details are empty
-                      }
-                      return null; 
-                    },
-                  ),
-                ]
-              )
-            ),
+                      controller: _paymentDetailsController,
+                      decoration:
+                          const InputDecoration(labelText: 'Payment Details'),
+                      validator: nullValidator),
+                ])),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  final donationAmount = _amountController.text as int;
+                  final donationAmount = int.parse(_amountController.text);
                   final donorDetails = _paymentDetailsController.text;
-                  
-                  Donation don = user.donate(org, donationAmount, donorDetails);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => InteractionView(user: user, element: don, New: true, type: 'Donations',)),
-                  );
+
+                  Donation don = Donation(
+                      '', org, user, '', false, donationAmount, donorDetails);
+                  DonationLoading(don, user, context);
                 }
               },
               child: const Text('Donate'),
