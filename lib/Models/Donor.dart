@@ -57,7 +57,7 @@ class Donor extends User {
     Donation don =
         Donation('', org, this, '', false, donationAmount, org.paymentMethod!);
     if (org.paymentMethod == "Mpesa") {
-      await promptMpesaTransaction(
+      error = await promptMpesaTransaction(
           donationAmount, donorDetails, org.paymentDetails!,
           client: Client());
     } else if (org.paymentMethod == "Visa") {
