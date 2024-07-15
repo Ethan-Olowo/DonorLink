@@ -1,49 +1,84 @@
+import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Organisations/add_financial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
-class FinancialDocument extends StatelessWidget {
+class FinancialDocument extends StatefulWidget {
   final Organisation user;
   final Financial fin;
 
   const FinancialDocument({super.key, required this.user, required this.fin});
 
+  @override
+  _FinancialDocumentState createState() => _FinancialDocumentState();
+}
+
+class _FinancialDocumentState extends State<FinancialDocument> {
+  late Future<String> pdfUrlFuture;
+  int? pages;
+  bool isReady = false;
+  final Completer<PDFViewController> _controller =
+      Completer<PDFViewController>();
+
+  @override
+  void initState() {
+    super.initState();
+    pdfUrlFuture = _getPDFUrl(widget.fin.getLocation() ?? '');
+  }
+
   Future<String> _getPDFUrl(String location) async {
     try {
       final ref = FirebaseStorage.instance.refFromURL(location);
-      return await ref.getDownloadURL();
+      final url = await ref.getDownloadURL();
+      final filePath = await _downloadAndSavePDF(url);
+      return filePath;
     } catch (e) {
-      //print(e.toString());
-      return '';
+      return 'Error';
+    }
+  }
+
+  Future<String> _downloadAndSavePDF(String url) async {
+    try {
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/financial_document.pdf';
+      await Dio().download(url, filePath);
+      return filePath;
+    } catch (e) {
+      return 'Error';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Financial Document'),
-      ),
+      appBar: Bar(),
       body: FutureBuilder<String>(
-        future: _getPDFUrl(fin.getLocation() ?? ''),
+        future: pdfUrlFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data!.isEmpty ||
+              snapshot.data == 'Error') {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No document available.'),
+                  const Text('No document available.'),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddFinancialPage(organisation: user),
+                          builder: (context) =>
+                              AddFinancialPage(organisation: widget.user),
                         ),
                       );
                     },
@@ -63,10 +98,13 @@ class FinancialDocument extends StatelessWidget {
                 print(error.toString());
               },
               onRender: (_pages) {
-                // Handle render
+                setState(() {
+                  pages = _pages;
+                  isReady = true;
+                });
               },
               onViewCreated: (PDFViewController pdfViewController) {
-                // Handle view created
+                _controller.complete(pdfViewController);
               },
               onPageChanged: (int? page, int? total) {
                 // Handle page change
