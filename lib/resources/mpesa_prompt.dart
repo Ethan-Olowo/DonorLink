@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-Future<void> promptMpesaTransaction(
+Future<String?> promptMpesaTransaction(
     int amount, String donorDetails, String orgPaymentDetails,
     {http.Client? client}) async {
   client ??= http.Client();
@@ -46,8 +46,10 @@ Future<void> promptMpesaTransaction(
 
   if (response.statusCode == 200 || response.statusCode == 0) {
     print("Mpesa transaction successful");
+    return null;
   } else {
     print("Mpesa transaction failed: ${response.body}");
+    return response.body;
   }
 }
 

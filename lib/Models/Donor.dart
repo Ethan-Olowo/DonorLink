@@ -51,17 +51,25 @@ class Donor extends User {
     return map;
   }
 
-  Future<Donation>? donate(Organisation org, int donationAmount, String donorDetails) async {
+  Future<Donation?> donate(
+      Organisation org, int donationAmount, String donorDetails) async {
+    var error = null;
     Donation don =
         Donation('', org, this, '', false, donationAmount, org.paymentMethod!);
     if (org.paymentMethod == "Mpesa") {
-      await promptMpesaTransaction(donationAmount, donorDetails, org.paymentDetails!,
+      await promptMpesaTransaction(
+          donationAmount, donorDetails, org.paymentDetails!,
           client: Client());
     } else if (org.paymentMethod == "Visa") {
       //prompt transaction via Visa
     }
+    if(error ==null){
     db.addInteraction(don);
-    return don;
+      return don;
+    }else{
+      return null;
+    }
+
   }
 
   Future<Appointment?> requestAppointment(
