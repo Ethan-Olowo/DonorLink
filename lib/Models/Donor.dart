@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donorlink/Database/donor_controller.dart';
+import 'package:donorlink/Database/donor_controls.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/resources/mpesa_prompt.dart';
 import 'package:http/http.dart';
@@ -13,7 +13,7 @@ import 'Rating.dart';
 class Donor extends User {
   double rating;
   @override
-  var db = Donorcontroller();
+  var db = DonorControls();
 
   Donor(
       {required String id,
@@ -63,13 +63,12 @@ class Donor extends User {
     } else if (org.paymentMethod == "Visa") {
       //prompt transaction via Visa
     }
-    if(error ==null){
-    db.addInteraction(don);
+    if (error == null) {
+      db.addInteraction(don);
       return don;
-    }else{
+    } else {
       return null;
     }
-
   }
 
   Future<Appointment?> requestAppointment(

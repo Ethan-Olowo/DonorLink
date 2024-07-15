@@ -75,7 +75,7 @@ class Database {
     await db.collection("Interactions").where("type", isEqualTo: type).where("org", isEqualTo: user.id).get().then(
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
-          final data = docSnapshot.data() as Map<String, dynamic>;
+          final data = docSnapshot.data();
           Donor donor = await getUser(data['donor']);
           if(type=='donation')inters.add(Donation.fromFirestore(docSnapshot,user as Organisation, donor));    
           if(type=='appointment')inters.add(Appointment.fromFirestore(docSnapshot,user as Organisation, donor));    
@@ -103,7 +103,7 @@ class Database {
     await db.collection("Reviews").where("org", isEqualTo: user.id).get().then(
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
-          final data = docSnapshot.data() as Map<String, dynamic>;
+          final data = docSnapshot.data();
           Reviewer rev = await getUser(data['reviewer']);
           revs.add(Review.fromFirestore(docSnapshot, user as Organisation, rev));    
         }

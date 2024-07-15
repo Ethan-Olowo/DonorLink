@@ -1,7 +1,7 @@
 import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Organisation.dart';
 
-class Orgcontroller extends Database {
+class OrganisationControls extends Database {
 
   @override
   Future<List<Organisation>> getOrganisations() async {
