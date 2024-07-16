@@ -186,35 +186,12 @@ class Database {
     await db.collection("Financials").count().get().then(
       (res) => stats.addAll({'financial':res.count ?? 0}),
     );
+    await db.collection("Approvals").count().get().then(
+          (res) => stats.addAll({'approval': res.count ?? 0}),
+        );
     /*await db.collection("Interactions").where("type", isEqualTo: 'donation').aggregate(sum('donationAmount')).get().then(
       (res) => stats.addAll({'total donations':res.getSum('donationAmount')?.round()}),
     );*/
     return stats;
   }
-
-  /*Future<List<Object>> getDocuments(String collection, List<List<String>> conditions) async {
-    List<Donation> donations=[];
-    Query<Map<String, dynamic>> query= db.collection(collection);
-    for( List<String> condition in conditions){
-      query = query.where(condition[0], isEqualTo: condition[1]);
-    }
-    await query.get().then(
-      (querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          donations.add(Donation.fromFirestore(docSnapshot,));    
-        }
-      },
-    );
-    return donations;
-  }
-  Future<Financial?> getFinancial(Organisation org, String id) async {
-    final docRef = db.collection("Financial").doc(id);
-    Financial? financial;
-    financial = await docRef.get().then(
-      (DocumentSnapshot doc) {
-        return Financial.fromFirestore(doc, org);
-      });
-    return financial;
-  }
-  */
 }

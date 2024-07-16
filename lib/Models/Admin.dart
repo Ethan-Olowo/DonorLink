@@ -75,7 +75,7 @@ class Admin extends User {
     Map stats = await db.getStats();
     String output = '';
     stats.forEach(
-        (k, v) => output = '$output${(k as String).capitalize()}s : $v,\t');
+        (k, v) => output = '$output${(k as String).capitalize()}s : $v\n');
     return output;
   }
 
