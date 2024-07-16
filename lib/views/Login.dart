@@ -1,3 +1,4 @@
+import 'package:donorlink/resources/logo_loader.dart';
 import 'package:donorlink/views/Splashscreen.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:donorlink/resources/password_reset.dart';
@@ -125,7 +126,7 @@ class _LoginState extends State<Login> {
             Container(
               color: Colors.black.withOpacity(0.5),
               child: const Center(
-                child: CircularProgressIndicator(),
+                child: LogoLoader(height: 150),
               ),
             ),
         ],
