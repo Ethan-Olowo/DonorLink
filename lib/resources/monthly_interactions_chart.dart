@@ -3,6 +3,7 @@ import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Rating.dart';
 import 'package:donorlink/resources/chart.dart';
+import 'package:donorlink/resources/logo_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:string_capitalize/string_capitalize.dart';
@@ -86,7 +87,9 @@ class _MonthlyInteractionsChartState extends State<MonthlyInteractionsChart> {
       future: fetchInteractionsByMonth(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const LogoLoader(
+            height: 150,
+          );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

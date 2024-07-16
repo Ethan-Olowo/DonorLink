@@ -1,5 +1,6 @@
 import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/resources/chart.dart';
+import 'package:donorlink/resources/logo_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 
@@ -23,7 +24,7 @@ class _ChartState extends State<Chart> {
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const LogoLoader(height: 150);
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
