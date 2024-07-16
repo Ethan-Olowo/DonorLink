@@ -1,5 +1,4 @@
 import 'package:donorlink/Database/database.dart';
-import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Approval.dart';
 import 'package:donorlink/Models/Donation.dart';
@@ -13,11 +12,11 @@ import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
 
 class AdminControls extends Database {
-  approveReviewer(Admin admin, Reviewer reviewer, Approval approval) async {
-    final revDoc = db.collection("Users").doc(reviewer.id);
+  approveReviewer(Approval approval) async {
+    final revDoc = db.collection("Users").doc(approval.reviewer.id);
 
     return await db.runTransaction((transaction) async {
-      transaction.update(revDoc, reviewer.toFirestore());
+      transaction.update(revDoc, approval.reviewer.toFirestore());
       db.collection("Approvals").add(approval.toFirestore());
     }).then(
       (value) => true,

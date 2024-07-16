@@ -4,6 +4,7 @@ import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/resources/appbar.dart';
+import 'package:donorlink/views/Admin/approval_processing.dart';
 import 'package:donorlink/views/Admin/view_interactions.dart';
 import 'package:flutter/material.dart';
 
@@ -97,20 +98,13 @@ class _ViewUserState extends State<ViewUser> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        var result = await widget.admin
-                            .approveReviewer(user as Reviewer);
-                        if (result is Reviewer) {
-                          setState(() {
-                            user = result;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Reviewer Approved')),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Approval Failed')),
-                          );
-                        }
+                        // route to loading page instead
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ApprovalProcessing(widget.admin, user as Reviewer, context),
+                          ),
+                        );
                       },
                       child: const Text('Approve'),
                     ),
