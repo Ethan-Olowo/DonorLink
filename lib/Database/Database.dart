@@ -133,20 +133,7 @@ class Database {
     );
   }
 
-  Future<bool> addReview(Review rev) async {
-    final orgDoc = db.collection("Users").doc(rev.org.id);
-    return await db.runTransaction((transaction) async {
-      if(rev.approval == true){
-        transaction.update(orgDoc, {"approval": 'approved', 'approvalDate' : rev.date});          
-      }else{
-        transaction.update(orgDoc, {"approval": 'rejected'});
-      }
-      db.collection("Reviews").add(rev.toFirestore());
-    }).then(
-      (value) =>  true,
-      onError: (e) => false,
-    );
-  }
+  
   
   Future<bool> addRating(Rating rating) async {
     Organisation org = await rating.getOrg();

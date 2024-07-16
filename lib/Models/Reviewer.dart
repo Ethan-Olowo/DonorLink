@@ -46,7 +46,7 @@ class Reviewer extends User {
   Future<Review?> reviewOrganisation(
       Organisation org, bool app, String comment) async {
     var rev = Review('', app, comment, this, org);
-    if (await db.addReview(rev)) {
+    if (await (db as RevControls).addReview(rev)) {
       return rev;
     }
     return null;
