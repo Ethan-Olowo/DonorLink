@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> {
       TextEditingController();
 
   String? _errorMessage;
+  bool _isLoading = false; // State variable for loading indicator
 
   @override
   Widget build(BuildContext context) {
@@ -35,114 +36,125 @@ class _RegisterState extends State<Register> {
         key: const Key('appBar'),
         toolbarHeight: 50,
         title: Text('${widget.userType} Registration'),
-        leading: IconButton(
-          key: const Key('backButton'),
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Image(
-                  key: Key('logoImage'),
-                  image: AssetImage('assets/images/Logo.png'),
-                  height: 150,
-                ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        key: const Key('nameField'),
-                        controller: _nameController,
-                        decoration: const InputDecoration(labelText: 'Name'),
-                        validator: nullValidator,
-                      ),
-                      TextFormField(
-                        key: const Key('emailField'),
-                        controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                        validator: emailValidator,
-                      ),
-                      TextFormField(
-                        key: const Key('phoneField'),
-                        controller: _phoneController,
-                        decoration: const InputDecoration(labelText: 'Phone'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        key: const Key('passwordField'),
-                        controller: _passwordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Password'),
-                        obscureText: true,
-                        validator: passwordValidator,
-                      ),
-                      TextFormField(
-                        key: const Key('confirmPasswordField'),
-                        controller: _confirmPasswordController,
-                        decoration: const InputDecoration(
-                            labelText: 'Confirm Password'),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (value != _passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                if (_errorMessage != null)
-                  Padding(
-                    key: const Key('errorText'),
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Image(
+                      key: Key('logoImage'),
+                      image: AssetImage('assets/images/Logo.png'),
+                      height: 150,
                     ),
-                  ),
-                ElevatedButton(
-                  key: const Key('registerButton'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      createAccount(
-                        _emailController.text,
-                        _passwordController.text,
-                        _nameController.text,
-                        _phoneController.text,
-                      );
-                    }
-                  },
-                  child: const Text('Register'),
+                    const SizedBox(height: 20),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            key: const Key('nameField'),
+                            controller: _nameController,
+                            decoration:
+                                const InputDecoration(labelText: 'Name'),
+                            validator: nullValidator,
+                          ),
+                          TextFormField(
+                            key: const Key('emailField'),
+                            controller: _emailController,
+                            decoration:
+                                const InputDecoration(labelText: 'Email'),
+                            validator: emailValidator,
+                          ),
+                          TextFormField(
+                            key: const Key('phoneField'),
+                            controller: _phoneController,
+                            decoration:
+                                const InputDecoration(labelText: 'Phone'),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            key: const Key('passwordField'),
+                            controller: _passwordController,
+                            decoration:
+                                const InputDecoration(labelText: 'Password'),
+                            obscureText: true,
+                            validator: passwordValidator,
+                          ),
+                          TextFormField(
+                            key: const Key('confirmPasswordField'),
+                            controller: _confirmPasswordController,
+                            decoration: const InputDecoration(
+                                labelText: 'Confirm Password'),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please confirm your password';
+                              }
+                              if (value != _passwordController.text) {
+                                return 'Passwords do not match';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (_errorMessage != null)
+                      Padding(
+                        key: const Key('errorText'),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(
+                          _errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ElevatedButton(
+                      key: const Key('registerButton'),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          createAccount(
+                            _emailController.text,
+                            _passwordController.text,
+                            _nameController.text,
+                            _phoneController.text,
+                          );
+                        }
+                      },
+                      child: const Text('Register'),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }
 
   Future<void> createAccount(
       String email, String password, String name, String phone) async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null; // Clear any previous error message
+    });
     if (widget.userType != 'Admin') {
       Database db = Database();
       try {
@@ -209,9 +221,16 @@ class _RegisterState extends State<Register> {
         setState(() {
           _errorMessage = 'An unknown error occurred.';
         });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     } else {
-      _errorMessage = 'Cannot Create Admin Users';
+      setState(() {
+        _errorMessage = 'Cannot Create Admin Users';
+        _isLoading = false;
+      });
     }
   }
 }
