@@ -25,7 +25,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _animation = Tween(begin: 0.2, end: 0.8).animate(_controller);
 
     widget.await();
   }
