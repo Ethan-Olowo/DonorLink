@@ -76,7 +76,7 @@ class _PageState extends State<ViewInteractions> {
                   return ListView.builder(
                     itemCount: elements.length,
                     itemBuilder: (context, index) {
-                      var element;
+                      Interaction element;
                       if (widget.type == 'donation') {
                         element = elements[index] as Donation;
                       } else {
@@ -89,7 +89,7 @@ class _PageState extends State<ViewInteractions> {
                               ? Text(
                                   'Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
                               : Text(
-                                  'Donation Date: ${element.date}\nAmount: ${element.donationAmount}'),
+                                  'Donation Date: ${element.date}\nAmount: ${(element as Donation).donationAmount}'),
                           onTap: () {
                             Navigator.push(
                               context,

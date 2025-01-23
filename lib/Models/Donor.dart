@@ -53,7 +53,7 @@ class Donor extends User {
 
   Future<Donation?> donate(
       Organisation org, int donationAmount, String donorDetails) async {
-    var error = null;
+    String? error;
     Donation don =
         Donation('', org, this, '', false, donationAmount, org.paymentMethod!);
     if (org.paymentMethod == "Mpesa") {

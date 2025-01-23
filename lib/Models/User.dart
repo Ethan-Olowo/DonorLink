@@ -42,7 +42,7 @@ abstract class User {
   }
 
   Future<bool> updateEmail() async {
-    fire.User? user = await fire.FirebaseAuth.instance.currentUser;
+    fire.User? user = fire.FirebaseAuth.instance.currentUser;
     await user?.verifyBeforeUpdateEmail("janeq@example.com");
     return true;
   }

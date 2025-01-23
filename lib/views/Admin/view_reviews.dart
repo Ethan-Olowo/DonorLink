@@ -41,7 +41,7 @@ class _PageState extends State<ViewReviews> {
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Search Reviews',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
               ),
               // Update _searchText on user input change
               onChanged: (text) {
@@ -59,7 +59,7 @@ class _PageState extends State<ViewReviews> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No Reviews found.'));
+                    return const Center(child: Text('No Reviews found.'));
                   }
 
                   List<Review> elements = snapshot.data!;

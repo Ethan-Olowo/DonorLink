@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Organisation>> _organisationsFuture;
-  String _searchText = "";
+  final String _searchText = "";
 
   @override
   void initState() {

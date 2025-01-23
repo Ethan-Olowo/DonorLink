@@ -9,7 +9,7 @@ class DonationLoading extends LoadingScreen {
   final Donor user;
   final Donation don;
   final BuildContext context;
-  DonationLoading(
+  const DonationLoading(
     this.don,
     this.user,
     this.context, {
@@ -37,7 +37,7 @@ class DonationLoading extends LoadingScreen {
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Donation Failed \nReturning to ${don.org.name} page')));
-      await Future.delayed(Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 10));
       Navigator.push(
           context,
           MaterialPageRoute(

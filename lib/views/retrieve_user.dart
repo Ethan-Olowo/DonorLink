@@ -16,7 +16,7 @@ import 'package:donorlink/views/Reviewers/home_page.dart' as reviewer;
 class RetrieveUser extends LoadingScreen {
   final String userId;
   final BuildContext context;
-  RetrieveUser(this.userId, this.context, {super.key});
+  const RetrieveUser(this.userId, this.context, {super.key});
 
   @override
   final String message = 'logging in...';

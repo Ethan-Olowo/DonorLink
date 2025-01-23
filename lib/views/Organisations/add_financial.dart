@@ -77,7 +77,7 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
           await newFinancial.upload();
 
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Financial Document Added')));
+              const SnackBar(content: Text('Financial Document Added')));
           Navigator.pop(context);
         } catch (error) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -92,7 +92,7 @@ class _AddFinancialPageState extends State<AddFinancialPage> {
           _isUploading = false;
         });
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('No file selected')));
+            .showSnackBar(const SnackBar(content: Text('No file selected')));
       }
     }
   }

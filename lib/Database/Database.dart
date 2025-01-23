@@ -136,7 +136,7 @@ class Database {
   
   
   Future<bool> addRating(Rating rating) async {
-    Organisation org = await rating.getOrg();
+    Organisation org = rating.getOrg();
     final orgDoc = db.collection("Users").doc(org.id);
     return await db.runTransaction((transaction) async {
       final snapshot = await transaction.get(orgDoc);

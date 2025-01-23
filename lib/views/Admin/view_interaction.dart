@@ -18,8 +18,8 @@ class ViewInteraction extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
             child: Column(children: [
-          if (inter is Donation) Text('Donation'),
-          if (inter is Appointment) Text('Appointment'),
+          if (inter is Donation) const Text('Donation'),
+          if (inter is Appointment) const Text('Appointment'),
           Text(inter.toString())
         ])),
       ),

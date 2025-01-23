@@ -79,9 +79,9 @@ class _FinancialDocumentState extends State<FinancialDocument> {
               onError: (error) {
                 print(error.toString());
               },
-              onRender: (_pages) {
+              onRender: (pages) {
                 setState(() {
-                  pages = _pages;
+                  pages = pages;
                   isReady = true;
                 });
               },

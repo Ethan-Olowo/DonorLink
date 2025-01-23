@@ -14,7 +14,7 @@ class ViewOrganisations extends StatefulWidget {
 }
 
 class _PageState extends State<ViewOrganisations> {
-  String _searchText = "";
+  final String _searchText = "";
   late Future<List<Organisation>> _organisationsFuture;
 
   @override
