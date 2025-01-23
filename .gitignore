@@ -92,6 +92,7 @@ pubspec.lock
 .metadata
 ios/Flutter/flutter_export_environment.sh
 ios/Podfile.lock
+firebase.json
 
 # Flutter specific
 **/build/
@@ -135,3 +136,5 @@ ios/Flutter/Flutter.podspec
 *.log
 pubspec.lock
 .env
+.firebaserc
+
