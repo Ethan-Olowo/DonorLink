@@ -13,7 +13,7 @@ import 'package:donorlink/views/Hospitals/organisation_account.dart';
 class RetrieveUser extends LoadingScreen {
   final String userId;
   final BuildContext context;
-  RetrieveUser(this.userId, this.context, {super.key});
+  const RetrieveUser(this.userId, this.context, {super.key});
 
   @override
   final String message = 'logging in...';

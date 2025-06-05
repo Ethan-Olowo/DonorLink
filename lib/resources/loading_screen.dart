@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatefulWidget {
-  LoadingScreen({super.key});
+  const LoadingScreen({super.key});
 
   final String message = 'Loading...';
 

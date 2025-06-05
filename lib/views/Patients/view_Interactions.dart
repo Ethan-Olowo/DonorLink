@@ -84,7 +84,7 @@ class _PageState extends State<ViewInteractions> {
                               ? Text(
                                   'Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
                               : Text(
-                                  'Donation Date: ${element.date}\nAmount: ${element.donationAmount}'),
+                                  'Donation Date: ${element.date}\nAmount: ${(element as Donation).donationAmount}'),
                           onTap: () {
                             Navigator.push(
                               context,

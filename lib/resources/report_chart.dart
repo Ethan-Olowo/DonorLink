@@ -7,7 +7,7 @@ import 'package:string_capitalize/string_capitalize.dart';
 class Chart extends StatefulWidget {
   final String type;
   final Database db = Database();
-  Chart(this.type, {Key? key}) : super(key: key);
+  Chart(this.type, {super.key});
 
   @override
   _ChartState createState() => _ChartState();

@@ -102,7 +102,7 @@ class AdminControls extends Database {
     await db.collection("Users").get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          final data = docSnapshot.data() as Map<String, dynamic>;
+          final data = docSnapshot.data();
           print(data);
           if (data['type'] == 'donor') {
             users.add(Patient.fromFirestore(
@@ -139,7 +139,7 @@ class AdminControls extends Database {
           .then(
         (querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
-            final data = docSnapshot.data() as Map<String, dynamic>;
+            final data = docSnapshot.data();
             Reviewer rev = await getUser(data['reviewer']);
             Hospital org = await getUser(data['org']);
             revs.add(Review.fromFirestore(docSnapshot, org, rev));
@@ -150,7 +150,7 @@ class AdminControls extends Database {
       await db.collection("Reviews").get().then(
         (querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
-            final data = docSnapshot.data() as Map<String, dynamic>;
+            final data = docSnapshot.data();
             Reviewer rev = await getUser(data['reviewer']);
             revs.add(Review.fromFirestore(docSnapshot, user as Hospital, rev));
           }

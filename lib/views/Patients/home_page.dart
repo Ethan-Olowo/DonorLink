@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     String? name = widget.user.name;
 
+    String? name = widget.user.name;
+
     return Scaffold(
       appBar: Bar(
         leading: IconButton(
@@ -43,6 +45,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
+                builder: (context) => DonorAccount(user: widget.user),
                 builder: (context) => DonorAccount(user: widget.user),
               ),
             );
@@ -59,7 +62,42 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Welcome $name', style: const TextStyle(fontSize: 24)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewInteractions(
+                          user: widget.user,
+                          type: 'donation',
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Donations'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewInteractions(
+                          user: widget.user,
+                          type: 'appointment',
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Appointments'),
+                ),
+              ],
+            ),
             Text('Welcome $name', style: const TextStyle(fontSize: 24)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,9 +135,17 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
             TextField(
               decoration: const InputDecoration(
+            TextField(
+              decoration: const InputDecoration(
                 labelText: 'Search Organisations',
                 prefixIcon: Icon(Icons.search),
               ),
+              // Update _searchText on user input change
+              onChanged: (text) {
+                setState(() {
+                  _searchText = text;
+                });
+              },
               // Update _searchText on user input change
               onChanged: (text) {
                 setState(() {

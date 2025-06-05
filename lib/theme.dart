@@ -22,7 +22,7 @@ class AppTheme {
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: primaryColor,
       secondary: accentColor,
-      background: backgroundColor,
+      surface: backgroundColor,
       onPrimary: Colors.white,
       onSecondary: Colors.black,
     ),

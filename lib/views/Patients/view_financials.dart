@@ -12,6 +12,7 @@ class ViewFinancials extends StatefulWidget {
     super.key,
     required this.user,
     required this.org,
+    required this.org,
   });
 
   @override
@@ -19,12 +20,15 @@ class ViewFinancials extends StatefulWidget {
 }
 
 class _PageState extends State<ViewFinancials> {
+class _PageState extends State<ViewFinancials> {
   String _searchText = "";
+  late Future<List<Financial>> _financialsFuture;
   late Future<List<Financial>> _financialsFuture;
 
   @override
   void initState() {
     super.initState();
+    _financialsFuture = widget.org.getFinancials();
     _financialsFuture = widget.org.getFinancials();
   }
 
@@ -38,8 +42,12 @@ class _PageState extends State<ViewFinancials> {
           children: [
             Text('${widget.org.name} Financials',
                 style: Theme.of(context).textTheme.headlineSmall),
+            Text('${widget.org.name} Financials',
+                style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
+                labelText: 'Search Date',
+                prefixIcon: Icon(Icons.search),
                 labelText: 'Search Date',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -53,6 +61,8 @@ class _PageState extends State<ViewFinancials> {
             Expanded(
               child: FutureBuilder<List<Financial>>(
                 future: _financialsFuture,
+              child: FutureBuilder<List<Financial>>(
+                future: _financialsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -61,8 +71,13 @@ class _PageState extends State<ViewFinancials> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(
                         child: Text('No Financial documents found.'));
+                    return const Center(
+                        child: Text('No Financial documents found.'));
                   }
 
+                  List<Financial> fins = snapshot.data!;
+                  fins = fins
+                      .where((fin) => fin
                   List<Financial> fins = snapshot.data!;
                   fins = fins
                       .where((fin) => fin
@@ -73,14 +88,19 @@ class _PageState extends State<ViewFinancials> {
 
                   return ListView.builder(
                     itemCount: fins.length,
+                    itemCount: fins.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
+                          title: Text('${fins[index].date}'),
                           title: Text('${fins[index].date}'),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
+                                builder: (context) => FinancialDocument(
+                                  user: widget.user,
+                                  fin: fins[index],
                                 builder: (context) => FinancialDocument(
                                   user: widget.user,
                                   fin: fins[index],

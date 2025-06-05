@@ -71,12 +71,15 @@ class _MonthlyInteractionsChartState extends State<MonthlyInteractionsChart> {
     List<Interaction> interactions =
         await widget.org.getInteractions(widget.type);
     Map<String, double> monthlyInteractions = {};
-    if (widget.type == 'donation')
+    if (widget.type == 'donation') {
       monthlyInteractions = getMonthlyDonations(interactions);
-    if (widget.type == 'appointment')
+    }
+    if (widget.type == 'appointment') {
       monthlyInteractions = getMonthlyDonations(interactions);
-    if (widget.type == 'rating')
+    }
+    if (widget.type == 'rating') {
       monthlyInteractions = getMonthlyDonations(interactions);
+    }
     return monthlyInteractions;
   }
 

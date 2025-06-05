@@ -9,7 +9,7 @@ class ApprovalProcessing extends LoadingScreen {
   final Hospital user;
   final BuildContext context;
 
-  ApprovalProcessing(this.admin, this.user, this.context, {super.key});
+  const ApprovalProcessing(this.admin, this.user, this.context, {super.key});
 
   @override
   final String message = 'Processing Approval';

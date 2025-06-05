@@ -15,7 +15,7 @@ class ViewUsers extends StatefulWidget {
 }
 
 class _PageState extends State<ViewUsers> {
-  String _searchText = "";
+  final String _searchText = "";
   late Future<List<User>> _usersFuture;
 
   @override
