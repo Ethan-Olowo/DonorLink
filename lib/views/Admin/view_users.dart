@@ -22,11 +22,11 @@ class _PageState extends State<ViewUsers> {
   void initState() {
     super.initState();
     if (widget.type == 'organisation') {
-      _usersFuture = widget.user.getOrganisations();
+      _usersFuture = widget.user.getHospitals();
     } else if (widget.type == 'reviewer') {
       _usersFuture = widget.user.getReviewers();
     } else if (widget.type == 'donor') {
-      _usersFuture = widget.user.getOrganisations();
+      _usersFuture = widget.user.getHospitals();
     } else {
       _usersFuture = widget.user.getAllUsers();
     }
@@ -34,7 +34,7 @@ class _PageState extends State<ViewUsers> {
 
   Future<void> _reloadOrganisations() async {
     setState(() {
-      _usersFuture = widget.user.getOrganisations();
+      _usersFuture = widget.user.getHospitals();
     });
   }
 

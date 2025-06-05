@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Patient.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:intl/intl.dart';
 
 class Appointment extends Interaction {
@@ -10,28 +10,47 @@ class Appointment extends Interaction {
   bool approvalStatus;
   String reason;
 
-  Appointment(super.id, super.org, super.donor, this.approvalDate, this.approvalStatus, this.reason, this.appointmentDate);
+  Appointment(super.id, super.org, super.donor, this.approvalDate,
+      this.approvalStatus, this.reason, this.appointmentDate);
 
-  factory Appointment.fromFirestore(DocumentSnapshot snapshot, Organisation org, Donor donor){
+  factory Appointment.fromFirestore(
+      DocumentSnapshot snapshot, Hospital org, Patient donor) {
     final data = snapshot.data() as Map<String, dynamic>;
-    DateTime? approveD = data['approvalDate']?.toDate(); 
-    Appointment app = Appointment(snapshot.id, org , donor , approveD, data['approvalStatus'], data['reason'], data['appointmentDate'].toDate());
+    DateTime? approveD = data['approvalDate']?.toDate();
+    Appointment app = Appointment(
+        snapshot.id,
+        org,
+        donor,
+        approveD,
+        data['approvalStatus'],
+        data['reason'],
+        data['appointmentDate'].toDate());
     app.setDate(data['date'].toDate());
     return app;
   }
 
-  void setReason(String reason) { /*...*/ }
-  String getReason() { /*...*/ return reason; }
-  DateTime? getApprovalDate() { /*...*/ return approvalDate; }
-  bool getStatus() { /*...*/ return approvalStatus; }
-  void setApprovalDate(DateTime date) { /*...*/ }
-  String getAppointmentDate() {  
+  void setReason(String reason) {/*...*/}
+  String getReason() {
+    /*...*/ return reason;
+  }
+
+  DateTime? getApprovalDate() {
+    /*...*/ return approvalDate;
+  }
+
+  bool getStatus() {
+    /*...*/ return approvalStatus;
+  }
+
+  void setApprovalDate(DateTime date) {/*...*/}
+  String getAppointmentDate() {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(appointmentDate);
-    return formatted; 
-    }
-  void setAppointmentDate(DateTime date) { /*...*/ }
-  
+    return formatted;
+  }
+
+  void setAppointmentDate(DateTime date) {/*...*/}
+
   @override
   Map<String, dynamic> toFirestore() {
     Map<String, dynamic> map = super.toFirestore();
@@ -45,10 +64,10 @@ class Appointment extends Interaction {
     });
     return map;
   }
-  
+
   @override
-  String toString(){
-    return "${super.toString()} \nAppointment date: $appointmentDate \nReason: $reason \nApproval: ${approvalStatus? "Approved" : "Not Approved"}";
+  String toString() {
+    return "${super.toString()} \nAppointment date: $appointmentDate \nReason: $reason \nApproval: ${approvalStatus ? "Approved" : "Not Approved"}";
   }
 
   @override
@@ -56,6 +75,4 @@ class Appointment extends Interaction {
     approvalDate = DateTime.now();
     return super.updateInteraction();
   }
-  
 }
-

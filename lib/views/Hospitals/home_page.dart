@@ -1,13 +1,13 @@
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Organisations/organisation_account.dart';
-import 'package:donorlink/views/Organisations/view_interactions.dart';
-import 'package:donorlink/views/Organisations/view_financials.dart';
+import 'package:donorlink/views/Hospitals/organisation_account.dart';
+import 'package:donorlink/views/Hospitals/view_interactions.dart';
+import 'package:donorlink/views/Hospitals/view_financials.dart';
 import 'package:donorlink/resources/monthly_interactions_chart.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  final Organisation user;
+  final Hospital user;
   const HomePage({super.key, required this.user});
 
   @override

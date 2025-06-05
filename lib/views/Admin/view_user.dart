@@ -1,7 +1,6 @@
 import 'package:donorlink/Models/Admin.dart';
-import 'package:donorlink/Models/Donor.dart';
-import 'package:donorlink/Models/Organisation.dart';
-import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/approval_processing.dart';
@@ -38,7 +37,7 @@ class _ViewUserState extends State<ViewUser> {
             children: [
               Text(user.toString()),
               const SizedBox(height: 20),
-              if (user is Organisation || user is Donor)
+              if (user is Hospital || user is Patient)
                 Column(
                   children: [
                     ElevatedButton(
@@ -88,12 +87,7 @@ class _ViewUserState extends State<ViewUser> {
                     ),
                   ],
                 ),
-              if (user is Reviewer || user is Organisation)
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('View Reviews'),
-                ),
-              if (user is Reviewer && (user as Reviewer).approval != 'approved')
+              if (user is Hospital && (user as Hospital).approval != 'approved')
                 Column(
                   children: [
                     ElevatedButton(
@@ -102,7 +96,8 @@ class _ViewUserState extends State<ViewUser> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ApprovalProcessing(widget.admin, user as Reviewer, context),
+                            builder: (context) => ApprovalProcessing(
+                                widget.admin, user as Hospital, context),
                           ),
                         );
                       },
@@ -114,7 +109,7 @@ class _ViewUserState extends State<ViewUser> {
                     ),
                   ],
                 ),
-              if (user is Organisation)
+              if (user is Hospital)
                 ElevatedButton(
                   onPressed: () {},
                   child: const Text('View Finances'),

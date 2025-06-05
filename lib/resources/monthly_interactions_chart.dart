@@ -1,6 +1,6 @@
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/Models/Rating.dart';
 import 'package:donorlink/resources/chart.dart';
 import 'package:donorlink/resources/logo_loader.dart';
@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 
 class MonthlyInteractionsChart extends StatefulWidget {
-  final Organisation org;
+  final Hospital org;
   final String type;
   const MonthlyInteractionsChart(
       {super.key, required this.org, required this.type});

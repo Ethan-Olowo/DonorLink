@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:donorlink/Models/Financial.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Organisations/add_financial.dart';
+import 'package:donorlink/views/Hospitals/add_financial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FinancialDocument extends StatefulWidget {
-  final Organisation user;
+  final Hospital user;
   final Financial fin;
 
   const FinancialDocument({super.key, required this.user, required this.fin});

@@ -1,12 +1,12 @@
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 
 class ViewInteraction extends StatefulWidget {
-  final Organisation user;
+  final Hospital user;
   final Interaction element;
   final String type;
   const ViewInteraction(

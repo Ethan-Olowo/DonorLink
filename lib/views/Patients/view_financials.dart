@@ -1,32 +1,31 @@
-import 'package:donorlink/Models/Admin.dart';
-import 'package:donorlink/Models/Review.dart';
-import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Financial.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Admin/view_review.dart';
+import 'package:donorlink/views/Patients/view_financial.dart';
 import 'package:flutter/material.dart';
 
-class ViewReviews extends StatefulWidget {
-  final Admin admin;
-  final Reviewer? user;
-  const ViewReviews({
+class ViewFinancials extends StatefulWidget {
+  final Patient user;
+  final Hospital org;
+  const ViewFinancials({
     super.key,
     required this.user,
-    required this.admin,
+    required this.org,
   });
 
   @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<ViewReviews> {
+class _PageState extends State<ViewFinancials> {
   String _searchText = "";
-  late Future<List<Review>> _elementsFuture;
+  late Future<List<Financial>> _financialsFuture;
 
   @override
   void initState() {
     super.initState();
-    if (widget.user != null) _elementsFuture = widget.user!.getReviews();
-    if (widget.user == null) _elementsFuture = widget.admin.getReviews(null);
+    _financialsFuture = widget.org.getFinancials();
   }
 
   @override
@@ -37,11 +36,12 @@ class _PageState extends State<ViewReviews> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text('View Reviews'),
+            Text('${widget.org.name} Financials',
+                style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Search Reviews',
-                prefixIcon: const Icon(Icons.search),
+                labelText: 'Search Date',
+                prefixIcon: Icon(Icons.search),
               ),
               // Update _searchText on user input change
               onChanged: (text) {
@@ -51,40 +51,39 @@ class _PageState extends State<ViewReviews> {
               },
             ),
             Expanded(
-              child: FutureBuilder<List<Review>>(
-                future: _elementsFuture,
+              child: FutureBuilder<List<Financial>>(
+                future: _financialsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No Reviews found.'));
+                    return const Center(
+                        child: Text('No Financial documents found.'));
                   }
 
-                  List<Review> elements = snapshot.data!;
-                  elements = elements
-                      .where((element) => element
+                  List<Financial> fins = snapshot.data!;
+                  fins = fins
+                      .where((fin) => fin
                           .getDate()
                           .toLowerCase()
                           .contains(_searchText.toLowerCase()))
                       .toList();
 
                   return ListView.builder(
-                    itemCount: elements.length,
+                    itemCount: fins.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text(elements[index].getDate()),
-                          subtitle: Text(
-                              '${elements[index]}\nReviewer: ${elements[index].reviewer.name}'),
+                          title: Text('${fins[index].date}'),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ViewReview(
-                                  user: widget.admin,
-                                  rev: elements[index],
+                                builder: (context) => FinancialDocument(
+                                  user: widget.user,
+                                  fin: fins[index],
                                 ),
                               ),
                             );

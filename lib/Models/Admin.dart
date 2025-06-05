@@ -3,11 +3,9 @@ import 'package:donorlink/Database/admin_controls.dart';
 import 'package:donorlink/Models/Approval.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 import 'User.dart';
-import 'Review.dart';
-import 'Reviewer.dart';
 
 class Admin extends User {
   @override
@@ -31,32 +29,21 @@ class Admin extends User {
     );
   }
 
-  Future<bool> approveReviewer(Reviewer reviewer) async {
-    reviewer.approval = 'approved';
-    var approval = Approval('', this, reviewer, DateTime.now());
-    return await (db as AdminControls)
-        .approveReviewer(approval);
+  Future<bool> addHospital(Hospital hospital) async {
+    hospital.approval = 'approved';
+    var approval = Approval('', this, hospital, DateTime.now());
+    return await (db as AdminControls).approveReviewer(approval);
   }
 
-  void rejectReviewer(Reviewer reviewer) {
-    reviewer.approval = 'rejected';
-    (db as AdminControls).rejectReviewer(reviewer);
-  }
-
-  Future<List<Review>> getReviews(Organisation? org) async {
-    return await (db as AdminControls).getReviews(org);
+  void removeHospital(Hospital hospital) {
+    hospital.approval = 'rejected';
+    (db as AdminControls).rejectReviewer(hospital);
   }
 
   Future<List<User>> getReviewers() async {
     return await db.getUsers('reviewer');
   }
 
-  Future<List<User>> getUnapprovedReviewers() async {
-    var revs = await db.getUsers('reviewer');
-    return revs
-        .where((rev) => (rev as Reviewer).approval != 'approved')
-        .toList();
-  }
 
   Future<List<Financial>> getFinancials() async {
     return await db.getFinancials(null);

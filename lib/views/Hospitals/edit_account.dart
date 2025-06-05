@@ -1,11 +1,11 @@
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Organisations/organisation_account.dart';
+import 'package:donorlink/views/Hospitals/organisation_account.dart';
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 
 class EditAccount extends StatefulWidget {
-  final Organisation org;
+  final Hospital org;
 
   const EditAccount({super.key, required this.org});
 
@@ -18,22 +18,7 @@ class _EditAccountState extends State<EditAccount> {
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
   late TextEditingController _locationController;
-  late TextEditingController _paymentDetailsController;
 
-  final List<String> _charityTypes = [
-    'Education',
-    'Health',
-    'Environment',
-    'Animal Welfare',
-    'Arts & Culture',
-    'International Aid',
-    'Community Development',
-    'Research',
-    'Relief Services'
-  ];
-  String? _selectedType;
-  final List<String> _paymentMethods = ['Mpesa', 'Visa'];
-  String? _selectedPaymentMethod;
 
   @override
   void initState() {
@@ -41,10 +26,6 @@ class _EditAccountState extends State<EditAccount> {
     _nameController = TextEditingController(text: widget.org.name);
     _phoneController = TextEditingController(text: widget.org.phone);
     _locationController = TextEditingController(text: widget.org.location);
-    _paymentDetailsController =
-        TextEditingController(text: widget.org.paymentDetails);
-    _selectedType = widget.org.type;
-    _selectedPaymentMethod = widget.org.paymentMethod;
   }
 
   @override
@@ -52,7 +33,6 @@ class _EditAccountState extends State<EditAccount> {
     _nameController.dispose();
     _phoneController.dispose();
     _locationController.dispose();
-    _paymentDetailsController.dispose();
     super.dispose();
   }
 
@@ -60,10 +40,7 @@ class _EditAccountState extends State<EditAccount> {
     if (_formKey.currentState!.validate()) {
       widget.org.name = _nameController.text;
       widget.org.phone = _phoneController.text;
-      widget.org.type = _selectedType;
       widget.org.location = _locationController.text;
-      widget.org.paymentMethod = _selectedPaymentMethod;
-      widget.org.paymentDetails = _paymentDetailsController.text;
 
       await widget.org.updateUser()
           ? Navigator.push(
@@ -97,47 +74,10 @@ class _EditAccountState extends State<EditAccount> {
                   controller: _phoneController,
                   decoration: const InputDecoration(labelText: 'Phone'),
                   validator: phoneValidator),
-              DropdownButtonFormField<String>(
-                  value: _selectedType,
-                  decoration: const InputDecoration(labelText: 'Type'),
-                  items: _charityTypes.map((type) {
-                    return DropdownMenuItem(
-                      value: type,
-                      child: Text(type),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedType = value;
-                    });
-                  },
-                  validator: nullValidator),
               TextFormField(
                 controller: _locationController,
                 decoration: const InputDecoration(labelText: 'Location'),
               ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                  value: _selectedPaymentMethod,
-                  decoration:
-                      const InputDecoration(labelText: 'Payment Method'),
-                  items: _paymentMethods.map((method) {
-                    return DropdownMenuItem(
-                      value: method,
-                      child: Text(method),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedPaymentMethod = value;
-                    });
-                  },
-                  validator: nullValidator),
-              TextFormField(
-                  controller: _paymentDetailsController,
-                  decoration:
-                      const InputDecoration(labelText: 'Payment Details'),
-                  validator: nullValidator),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateOrganisation,

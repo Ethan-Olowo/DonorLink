@@ -5,7 +5,6 @@ import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/admin_account.dart';
 import 'package:donorlink/views/Admin/view_financials.dart';
 import 'package:donorlink/views/Admin/view_interactions.dart';
-import 'package:donorlink/views/Admin/view_reviews.dart';
 import 'package:donorlink/views/Admin/view_user.dart';
 import 'package:donorlink/views/Admin/view_users.dart';
 import 'package:donorlink/resources/report_chart.dart';
@@ -27,12 +26,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _reviewersFuture = widget.user.getUnapprovedReviewers();
+    _reviewersFuture = widget.user.getHospitals();
   }
 
   Future<void> _reloadReviewers() async {
     setState(() {
-      _reviewersFuture = widget.user.getUnapprovedReviewers();
+      _reviewersFuture = widget.user.getHospitals();
     });
   }
 
@@ -259,20 +258,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 child: const Text('View Financials'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewReviews(
-                        user: null,
-                        admin: widget.user,
-                      ),
-                    ),
-                  );
-                },
-                child: const Text('View Reviews'),
               ),
               const SizedBox(
                 height: 20,

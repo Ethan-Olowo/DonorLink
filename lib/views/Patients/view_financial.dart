@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Patient.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FinancialDocument extends StatefulWidget {
-  final Donor user;
+  final Patient user;
   final Financial fin;
 
   const FinancialDocument({super.key, required this.user, required this.fin});

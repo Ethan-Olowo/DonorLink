@@ -1,14 +1,13 @@
 import 'package:donorlink/Models/Appointment.dart';
-import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Organisations/view_interaction.dart';
+import 'package:donorlink/views/Hospitals/view_interaction.dart';
 import 'package:flutter/material.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 
 class ViewInteractions extends StatefulWidget {
-  final Organisation user;
+  final Hospital user;
   final String type;
   final bool all;
   const ViewInteractions({
@@ -87,11 +86,8 @@ class _PageState extends State<ViewInteractions> {
                       return Card(
                         child: ListTile(
                           title: Text('${elements[index].donor.name}'),
-                          subtitle: widget.type == 'appointment'
-                              ? Text(
-                                  'Appointment Date: ${elements[index].getDate()}\nApproval: ${(elements[index] as Appointment).approvalStatus}')
-                              : Text(
-                                  'Donation Date: ${elements[index].getDate()}\nAmount: ${(elements[index] as Donation).donationAmount}'),
+                          subtitle:Text(
+                                  'Appointment Date: ${elements[index].getDate()}\nApproval: ${(elements[index] as Appointment).approvalStatus}')bxzhgfdyhtrtytrtyuio9125,
                           onTap: () {
                             Navigator.push(
                               context,

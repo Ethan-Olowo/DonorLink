@@ -1,13 +1,13 @@
-import 'package:donorlink/Models/Donor.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Hospital.dart';
 import 'package:donorlink/Models/Rating.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Donors/view_interaction.dart';
+import 'package:donorlink/views/Patients/view_interaction.dart';
 import 'package:flutter/material.dart';
 
 class Rate extends StatefulWidget {
-  final Donor user;
-  final Organisation org;
+  final Patient user;
+  final Hospital org;
   const Rate({super.key, required this.org, required this.user});
   @override
   State<StatefulWidget> createState() => _RateState();
