@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<String?> promptMpesaTransaction(
     int amount, String donorDetails, String orgPaymentDetails,
@@ -8,12 +9,11 @@ Future<String?> promptMpesaTransaction(
   client ??= http.Client();
   String url =
       "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
-  String consumerKey = REMOVED;
-  String consumerSecret =
-      REMOVED;
-  var shortCode = REMOVED;
-  String passkey = REMOVED;
-  String callbackUrl = REMOVED;
+  String consumerKey = dotenv.env['MPESA_CONSUMER_KEY'] ?? '';
+  String consumerSecret = dotenv.env['MPESA_CONSUMER_SECRET'] ?? '';
+  var shortCode = dotenv.env['MPESA_SHORT_CODE'] ?? '';
+  String passkey = dotenv.env['MPESA_PASSKEY'] ?? '';
+  String callbackUrl = dotenv.env['MPESA_CALLBACK_URL'] ?? '';
 
   String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
   String password = base64Encode(utf8.encode(shortCode.toString() + passkey + timestamp));
