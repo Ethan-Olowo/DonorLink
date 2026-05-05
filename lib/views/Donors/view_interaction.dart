@@ -1,11 +1,11 @@
-import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/home_page.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:flutter/material.dart';
 
 class InteractionView extends StatelessWidget {
-  final Patient user;
+  final Donor user;
   final Interaction element;
   final bool New;
   final String type;

@@ -1,28 +1,29 @@
-import 'package:donorlink/Models/Admin.dart';
+// view_donation.dart
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
 import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/Models/Rating.dart';
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/resources/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ViewInteraction extends StatelessWidget {
-  final Admin user;
+  final Reviewer user;
   final Interaction inter;
   const ViewInteraction({super.key, required this.user, required this.inter});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Bar(),
+      appBar: Bar(
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Center(
-            child: Column(children: [
-          if (inter is Donation) Text('Donation'),
-          if (inter is Appointment) Text('Appointment'),
-          Text(inter.toString())
-        ])),
-      ),
+        child: Center(child: Column(children: [  
+          if(inter is Donation)const Text('Donation'),
+          if(inter is Appointment)const Text('Appointment'),
+          if (inter is Rating) const Text('Rating'),
+          Text(inter.toString())])),),
     );
   }
 }

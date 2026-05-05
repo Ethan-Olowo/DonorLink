@@ -1,6 +1,6 @@
 import 'package:donorlink/Models/Admin.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/User.dart';
 import 'package:donorlink/resources/appbar.dart';
 import 'package:donorlink/views/Admin/view_interaction.dart';
@@ -53,7 +53,7 @@ class _PageState extends State<ViewInteractions> {
             Text('View ${widget.type ?? 'Interactions'}'),
             if (widget.type != null)
               MonthlyInteractionsChart(
-                  org: widget.user as Hospital, type: widget.type!),
+                  org: widget.user as Organisation, type: widget.type!),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Search ${widget.type ?? 'Interactions'}',

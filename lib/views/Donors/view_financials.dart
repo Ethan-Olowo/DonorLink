@@ -1,13 +1,13 @@
-import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/view_financial.dart';
+import 'package:donorlink/views/Donors/view_financial.dart';
 import 'package:flutter/material.dart';
 
 class ViewFinancials extends StatefulWidget {
-  final Patient user;
-  final Hospital org;
+  final Donor user;
+  final Organisation org;
   const ViewFinancials({
     super.key,
     required this.user,

@@ -1,14 +1,15 @@
-import 'package:donorlink/Models/Patient.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/request_appointment.dart';
-import 'package:donorlink/views/Patients/rate.dart';
-import 'package:donorlink/views/Patients/view_financials.dart';
+import 'package:donorlink/views/Donors/request_appointment.dart';
+import 'package:donorlink/views/Donors/donate.dart';
+import 'package:donorlink/views/Donors/rate.dart';
+import 'package:donorlink/views/Donors/view_financials.dart';
 import 'package:flutter/material.dart';
 
 class ViewOrganisation extends StatelessWidget {
-  final Hospital org;
-  final Patient user;
+  final Organisation org;
+  final Donor user;
   const ViewOrganisation({super.key, required this.org, required this.user});
 
   @override
@@ -54,6 +55,18 @@ class ViewOrganisation extends StatelessWidget {
                               )));
                 },
                 child: const Text('Request Appointment'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Donate(
+                                org: org,
+                                user: user,
+                              )));
+                },
+                child: const Text('Donate'),
               ),
               ElevatedButton(
                 onPressed: () {

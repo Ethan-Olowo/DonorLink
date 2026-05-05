@@ -1,32 +1,33 @@
-import 'package:donorlink/Models/Admin.dart';
-import 'package:donorlink/Models/Financial.dart';
-import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Appointment.dart';
+import 'package:donorlink/Models/Donation.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Interaction.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Admin/view_financial.dart';
+import 'package:donorlink/views/Donors/view_interaction.dart';
 import 'package:flutter/material.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 
-class ViewFinancials extends StatefulWidget {
-  final Admin user;
-  final Organisation? org;
-  const ViewFinancials({
+class ViewInteractions extends StatefulWidget {
+  final Donor user;
+  final String type;
+  const ViewInteractions({
     super.key,
     required this.user,
-    required this.org,
+    required this.type,
   });
 
   @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<ViewFinancials> {
+class _PageState extends State<ViewInteractions> {
   String _searchText = "";
-  late Future<List<Financial>> _financialsFuture;
+  late Future<List<Interaction>> _elementsFuture;
 
   @override
   void initState() {
     super.initState();
-    if (widget.org != null) _financialsFuture = widget.org!.getFinancials();
-    if (widget.org == null) _financialsFuture = widget.user.getFinancials();
+    _elementsFuture = widget.user.getInteractions(widget.type);
   }
 
   @override
@@ -37,54 +38,67 @@ class _PageState extends State<ViewFinancials> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('${widget.org != null ? widget.org?.name : ''} Financials',
+            Text('View ${widget.type}',
                 style: Theme.of(context).textTheme.headlineSmall),
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Search Date',
+                labelText: 'Search',
                 prefixIcon: Icon(Icons.search),
               ),
-              // Update _searchText on user input change
               onChanged: (text) {
+                // Update _searchText on user input change
                 setState(() {
                   _searchText = text;
                 });
               },
             ),
             Expanded(
-              child: FutureBuilder<List<Financial>>(
-                future: _financialsFuture,
+              child: FutureBuilder<List<Interaction>>(
+                future: _elementsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                        child: Text('No Financial documents found.'));
+                    return Center(
+                        child: Text(
+                            'No ${widget.type.capitalize()} records found.'));
                   }
 
-                  List<Financial> fins = snapshot.data!;
-                  fins = fins
-                      .where((fin) => fin
-                          .getDate()
+                  List<Interaction> elements = snapshot.data!;
+                  elements = elements
+                      .where((app) => app.org.name!
                           .toLowerCase()
                           .contains(_searchText.toLowerCase()))
                       .toList();
 
                   return ListView.builder(
-                    itemCount: fins.length,
+                    itemCount: elements.length,
                     itemBuilder: (context, index) {
+                      var element;
+                      if (widget.type == 'donation') {
+                        element = elements[index] as Donation;
+                      } else {
+                        element = elements[index] as Appointment;
+                      }
                       return Card(
                         child: ListTile(
-                          title: Text('${fins[index].date}'),
+                          title: Text('${elements[index].org.name}'),
+                          subtitle: element is Appointment
+                              ? Text(
+                                  'Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
+                              : Text(
+                                  'Donation Date: ${element.date}\nAmount: ${(element as Donation).donationAmount}'),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FinancialDocument(
+                                builder: (context) => InteractionView(
                                   user: widget.user,
-                                  fin: fins[index],
+                                  type: widget.type,
+                                  element: element,
+                                  New: false,
                                 ),
                               ),
                             );

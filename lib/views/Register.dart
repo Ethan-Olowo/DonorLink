@@ -1,11 +1,13 @@
 import 'package:donorlink/resources/input_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:donorlink/Database/database.dart';
-import 'package:donorlink/Models/Patient.dart';
-import 'package:donorlink/Models/Hospital.dart';
-import 'package:donorlink/views/Hospitals/organisation_account.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
+import 'package:donorlink/Models/Reviewer.dart';
+import 'package:donorlink/views/Organisations/organisation_account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donorlink/views/Patients/home_page.dart' as pat;
+import 'package:donorlink/views/Donors/home_page.dart' as Don;
+import 'package:donorlink/views/Reviewers/reviewer_account.dart' as Rev;
 
 class Register extends StatefulWidget {
   const Register({super.key, required this.userType});
@@ -162,7 +164,7 @@ class _RegisterState extends State<Register> {
 
         switch (widget.userType) {
           case 'Donor':
-            user = Patient(
+            user = Donor(
                 id: credential.user!.uid,
                 name: name,
                 phone: phone,
@@ -172,15 +174,15 @@ class _RegisterState extends State<Register> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => pat.HomePage(
+                builder: (context) => Don.HomePage(
                   user: user,
                 ),
               ),
             );
             break;
           case 'Organisation':
-            user = Hospital(credential.user!.uid, name, phone, email, null,
-                0, 'pending', null, 0);
+            user = Organisation(credential.user!.uid, name, phone, email, null,
+                null, 0, null, null, 'pending', null, 0);
             db.addUser(user);
             Navigator.push(
               context,
@@ -191,7 +193,19 @@ class _RegisterState extends State<Register> {
               ),
             );
             break;
-          
+          case 'Reviewer':
+            user =
+                Reviewer(credential.user!.uid, name, phone, email, 'pending');
+            db.addUser(user);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Rev.ReviewerAccount(
+                  reviewer: user,
+                ),
+              ),
+            );
+            break;
         }
       } on FirebaseAuthException catch (e) {
         setState(() {

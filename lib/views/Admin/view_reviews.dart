@@ -1,32 +1,32 @@
-import 'package:donorlink/Models/Appointment.dart';
-import 'package:donorlink/Models/Patient.dart';
-import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/Models/Admin.dart';
+import 'package:donorlink/Models/Review.dart';
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/view_interaction.dart';
+import 'package:donorlink/views/Admin/view_review.dart';
 import 'package:flutter/material.dart';
-import 'package:string_capitalize/string_capitalize.dart';
 
-class ViewInteractions extends StatefulWidget {
-  final Patient user;
-  final String type;
-  const ViewInteractions({
+class ViewReviews extends StatefulWidget {
+  final Admin admin;
+  final Reviewer? user;
+  const ViewReviews({
     super.key,
     required this.user,
-    required this.type,
+    required this.admin,
   });
 
   @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<ViewInteractions> {
+class _PageState extends State<ViewReviews> {
   String _searchText = "";
-  late Future<List<Interaction>> _elementsFuture;
+  late Future<List<Review>> _elementsFuture;
 
   @override
   void initState() {
     super.initState();
-    _elementsFuture = widget.user.getInteractions(widget.type);
+    if (widget.user != null) _elementsFuture = widget.user!.getReviews();
+    if (widget.user == null) _elementsFuture = widget.admin.getReviews(null);
   }
 
   @override
@@ -37,22 +37,21 @@ class _PageState extends State<ViewInteractions> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('View ${widget.type}',
-                style: Theme.of(context).textTheme.headlineSmall),
+            const Text('View Reviews'),
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(Icons.search),
+                labelText: 'Search Reviews',
+                prefixIcon: const Icon(Icons.search),
               ),
+              // Update _searchText on user input change
               onChanged: (text) {
-                // Update _searchText on user input change
                 setState(() {
                   _searchText = text;
                 });
               },
             ),
             Expanded(
-              child: FutureBuilder<List<Interaction>>(
+              child: FutureBuilder<List<Review>>(
                 future: _elementsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,14 +59,13 @@ class _PageState extends State<ViewInteractions> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
-                        child: Text(
-                            'No ${widget.type.capitalize()} records found.'));
+                    return Center(child: Text('No Reviews found.'));
                   }
 
-                  List<Interaction> elements = snapshot.data!;
+                  List<Review> elements = snapshot.data!;
                   elements = elements
-                      .where((app) => app.org.name!
+                      .where((element) => element
+                          .getDate()
                           .toLowerCase()
                           .contains(_searchText.toLowerCase()))
                       .toList();
@@ -75,25 +73,18 @@ class _PageState extends State<ViewInteractions> {
                   return ListView.builder(
                     itemCount: elements.length,
                     itemBuilder: (context, index) {
-                      var element;
-                      element = elements[index] as Appointment;
                       return Card(
                         child: ListTile(
-                          title: Text('${elements[index].org.name}'),
-                          subtitle: element is Appointment
-                              ? Text(
-                                  'Appointment Date: ${element.getDate()}\nApproval: ${element.approvalStatus}')
-                              : Text(
-                                  'Donation Date: ${element.date}\nAmount: ${(element as Donation).donationAmount}'),
+                          title: Text(elements[index].getDate()),
+                          subtitle: Text(
+                              '${elements[index]}\nReviewer: ${elements[index].reviewer.name}'),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => InteractionView(
-                                  user: widget.user,
-                                  type: widget.type,
-                                  element: element,
-                                  New: false,
+                                builder: (context) => ViewReview(
+                                  user: widget.admin,
+                                  rev: elements[index],
                                 ),
                               ),
                             );

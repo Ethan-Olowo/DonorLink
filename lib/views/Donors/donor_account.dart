@@ -1,12 +1,12 @@
-import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/edit_account.dart';
-import 'package:donorlink/views/Patients/home_page.dart';
+import 'package:donorlink/views/Donors/edit_account.dart';
+import 'package:donorlink/views/Donors/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DonorAccount extends StatelessWidget {
-  final Patient user;
+  final Donor user;
   const DonorAccount({super.key, required this.user});
 
   @override

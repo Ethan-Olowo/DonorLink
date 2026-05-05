@@ -1,19 +1,22 @@
 import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Approval.dart';
-import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Donation.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Financial.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Rating.dart';
+import 'package:donorlink/Models/Review.dart';
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
 
 class AdminControls extends Database {
   approveReviewer(Approval approval) async {
-    final revDoc = db.collection("Users").doc(approval.hospital.id);
+    final revDoc = db.collection("Users").doc(approval.reviewer.id);
 
     return await db.runTransaction((transaction) async {
-      transaction.update(revDoc, approval.hospital.toFirestore());
+      transaction.update(revDoc, approval.reviewer.toFirestore());
       db.collection("Approvals").add(approval.toFirestore());
     }).then(
       (value) => true,
@@ -42,8 +45,8 @@ class AdminControls extends Database {
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data();
-          Patient donor = await getUser(data['donor']);
-          Hospital org = await getUser(data['org']);
+          Donor donor = await getUser(data['donor']);
+          Organisation org = await getUser(data['org']);
           if (type == 'donation') {
             inters.add(Donation.fromFirestore(docSnapshot, org, donor));
           }
@@ -65,8 +68,8 @@ class AdminControls extends Database {
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data() as Map<String, dynamic>;
-          Patient donor = await getUser(data['donor']);
-          Hospital org = await getUser(data['org']);
+          Donor donor = await getUser(data['donor']);
+          Organisation org = await getUser(data['org']);
           if (data['type'] == 'donation') {
             inters.add(Donation.fromFirestore(docSnapshot, org, donor));
           }
@@ -83,13 +86,13 @@ class AdminControls extends Database {
   }
 
   @override
-  Future<List<Financial>> getFinancials(Hospital? org) async {
+  Future<List<Financial>> getFinancials(Organisation? org) async {
     List<Financial> financials = [];
     await db.collection("Financials").get().then(
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data() as Map<String, dynamic>;
-          Hospital organisation = await getUser(data['org']);
+          Organisation organisation = await getUser(data['org']);
           financials.add(Financial.fromFirestore(docSnapshot, organisation));
         }
       },
@@ -105,12 +108,12 @@ class AdminControls extends Database {
           final data = docSnapshot.data();
           print(data);
           if (data['type'] == 'donor') {
-            users.add(Patient.fromFirestore(
+            users.add(Donor.fromFirestore(
               docSnapshot,
             ));
           }
           if (data['type'] == 'organisation') {
-            users.add(Hospital.fromFirestore(
+            users.add(Organisation.fromFirestore(
               docSnapshot,
             ));
           }
@@ -141,7 +144,7 @@ class AdminControls extends Database {
           for (var docSnapshot in querySnapshot.docs) {
             final data = docSnapshot.data();
             Reviewer rev = await getUser(data['reviewer']);
-            Hospital org = await getUser(data['org']);
+            Organisation org = await getUser(data['org']);
             revs.add(Review.fromFirestore(docSnapshot, org, rev));
           }
         },
@@ -152,7 +155,8 @@ class AdminControls extends Database {
           for (var docSnapshot in querySnapshot.docs) {
             final data = docSnapshot.data();
             Reviewer rev = await getUser(data['reviewer']);
-            revs.add(Review.fromFirestore(docSnapshot, user as Hospital, rev));
+            revs.add(
+                Review.fromFirestore(docSnapshot, user as Organisation, rev));
           }
         },
       );

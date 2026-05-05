@@ -1,18 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donorlink/Database/donor_controls.dart';
 import 'package:donorlink/Models/Interaction.dart';
+import 'package:donorlink/resources/mpesa_prompt.dart';
+import 'package:http/http.dart';
 
 import 'User.dart';
-import 'Hospital.dart';
+import 'Organisation.dart';
+import 'Donation.dart';
 import 'Appointment.dart';
 import 'Rating.dart';
 
-class Patient extends User {
+class Donor extends User {
   double rating;
   @override
   var db = DonorControls();
 
-  Patient(
+  Donor(
       {required String id,
       required String name,
       required String phone,
@@ -25,11 +28,11 @@ class Patient extends User {
           email,
         );
 
-  factory Patient.fromFirestore(
+  factory Donor.fromFirestore(
     DocumentSnapshot snapshot,
   ) {
     final data = snapshot.data() as Map<String, dynamic>;
-    return Patient(
+    return Donor(
       id: snapshot.id,
       name: data['name'],
       phone: data['phone'],
@@ -48,8 +51,28 @@ class Patient extends User {
     return map;
   }
 
+  Future<Donation?> donate(
+      Organisation org, int donationAmount, String donorDetails) async {
+    var error = null;
+    Donation don =
+        Donation('', org, this, '', false, donationAmount, org.paymentMethod!);
+    if (org.paymentMethod == "Mpesa") {
+      error = await promptMpesaTransaction(
+          donationAmount, donorDetails, org.paymentDetails!,
+          client: Client());
+    } else if (org.paymentMethod == "Visa") {
+      //prompt transaction via Visa
+    }
+    if (error == null) {
+      db.addInteraction(don);
+      return don;
+    } else {
+      return null;
+    }
+  }
+
   Future<Appointment?> requestAppointment(
-      Hospital org, DateTime appointmentDate, String reason) async {
+      Organisation org, DateTime appointmentDate, String reason) async {
     Appointment app =
         Appointment('', org, this, null, false, reason, appointmentDate);
     if (await db.addInteraction(app)) {
@@ -60,7 +83,7 @@ class Patient extends User {
   }
 
   Future<Rating?> rateOrganisation(
-      Hospital org, double score, String comment) async {
+      Organisation org, double score, String comment) async {
     Rating rating = Rating('', org, this, score, comment);
     if (await db.addRating(rating)) {
       return rating;

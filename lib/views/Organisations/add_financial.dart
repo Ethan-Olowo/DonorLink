@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:donorlink/Models/Financial.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 
 class AddFinancialPage extends StatefulWidget {
-  final Hospital organisation;
+  final Organisation organisation;
 
   const AddFinancialPage({super.key, required this.organisation});
 

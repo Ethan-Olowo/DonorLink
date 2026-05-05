@@ -1,13 +1,13 @@
-import 'package:donorlink/Models/Patient.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Patients/donor_account.dart';
-import 'package:donorlink/views/Patients/view_Interactions.dart';
-import 'package:donorlink/views/Patients/view_organisation.dart';
+import 'package:donorlink/views/Donors/donor_account.dart';
+import 'package:donorlink/views/Donors/view_Interactions.dart';
+import 'package:donorlink/views/Donors/view_organisation.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final Patient user;
+  final Donor user;
 
   const HomePage({super.key, required this.user});
 
@@ -16,18 +16,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<Hospital>> _organisationsFuture;
+  late Future<List<Organisation>> _organisationsFuture;
   String _searchText = "";
 
   @override
   void initState() {
     super.initState();
-    _organisationsFuture = widget.user.getHospitals();
+    _organisationsFuture = widget.user.getOrganisations();
   }
 
   Future<void> _reloadOrganisations() async {
     setState(() {
-      _organisationsFuture = widget.user.getHospitals();
+      _organisationsFuture = widget.user.getOrganisations();
     });
   }
 
@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             Expanded(
-              child: FutureBuilder<List<Hospital>>(
+              child: FutureBuilder<List<Organisation>>(
                 future: _organisationsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     return const Center(child: Text('No organisations found.'));
                   }
 
-                  List<Hospital> organisations = snapshot.data!;
+                  List<Organisation> organisations = snapshot.data!;
                   organisations = organisations
                       .where((org) => org.name!
                           .toLowerCase()
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                         child: ListTile(
                           title: Text('${organisations[index].name}'),
                           subtitle: Text(
-                              '\nRating: ${organisations[index].rating}'),
+                              'Charity type: ${organisations[index].type}\nRating: ${organisations[index].rating}'),
                           onTap: () {
                             Navigator.push(
                               context,

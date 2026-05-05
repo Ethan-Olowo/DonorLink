@@ -1,10 +1,12 @@
 import 'package:donorlink/Database/database.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 
 class OrganisationControls extends Database {
+
   @override
-  Future<List<Hospital>> getOrganisations() async {
-    List<Hospital> orgs = [];
+  Future<List<Organisation>> getOrganisations() async {
+    List<Organisation> orgs=[];
     return orgs;
   }
+
 }

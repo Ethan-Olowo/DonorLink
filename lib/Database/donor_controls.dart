@@ -1,16 +1,16 @@
 import 'package:donorlink/Database/database.dart';
 import 'package:donorlink/Models/Appointment.dart';
 import 'package:donorlink/Models/Donation.dart';
-import 'package:donorlink/Models/Patient.dart';
+import 'package:donorlink/Models/Donor.dart';
 import 'package:donorlink/Models/Interaction.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Rating.dart';
 import 'package:donorlink/Models/User.dart';
 
 class DonorControls extends Database {
   @override
-  Future<List<Hospital>> getOrganisations() async {
-    List<Hospital> orgs = [];
+  Future<List<Organisation>> getOrganisations() async {
+    List<Organisation> orgs = [];
     await db
         .collection("Users")
         .where("type", isEqualTo: 'organisation')
@@ -19,7 +19,7 @@ class DonorControls extends Database {
         .then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          orgs.add(Hospital.fromFirestore(
+          orgs.add(Organisation.fromFirestore(
             docSnapshot,
           ));
         }
@@ -41,17 +41,16 @@ class DonorControls extends Database {
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data();
-          Hospital org = await getUser(data['org']);
+          Organisation org = await getUser(data['org']);
           if (type == 'donation') {
-            inters
-                .add(Donation.fromFirestore(docSnapshot, org, user as Patient));
+            inters.add(Donation.fromFirestore(docSnapshot, org, user as Donor));
           }
           if (type == 'appointment') {
             inters.add(
-                Appointment.fromFirestore(docSnapshot, org, user as Patient));
+                Appointment.fromFirestore(docSnapshot, org, user as Donor));
           }
           if (type == 'rating') {
-            inters.add(Rating.fromFirestore(docSnapshot, org, user as Patient));
+            inters.add(Rating.fromFirestore(docSnapshot, org, user as Donor));
           }
         }
       },

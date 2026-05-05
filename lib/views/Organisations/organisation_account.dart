@@ -1,13 +1,13 @@
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/resources/appbar.dart';
-import 'package:donorlink/views/Hospitals/edit_account.dart';
-import 'package:donorlink/views/Hospitals/home_page.dart';
-import 'package:donorlink/views/Hospitals/view_financials.dart';
+import 'package:donorlink/views/Organisations/edit_account.dart';
+import 'package:donorlink/views/Organisations/home_page.dart';
+import 'package:donorlink/views/Organisations/view_financials.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OrgAccount extends StatefulWidget {
-  final Hospital org;
+  final Organisation org;
 
   const OrgAccount({super.key, required this.org});
   @override

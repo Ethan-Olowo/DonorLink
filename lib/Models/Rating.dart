@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donorlink/Models/Patient.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Donor.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'Interaction.dart';
+
 
 class Rating extends Interaction {
   double rating;
@@ -9,29 +10,22 @@ class Rating extends Interaction {
 
   Rating(super.id, super.org, super.donor, this.rating, this.comment);
 
-  factory Rating.fromFirestore(
-      DocumentSnapshot snapshot, Hospital org, Patient donor) {
-    final data = snapshot.data() as Map<String, dynamic>;
-    Rating don =
-        Rating(snapshot.id, org, donor, data['rating'], data['comment']);
+  factory Rating.fromFirestore(DocumentSnapshot snapshot,Organisation org, Donor donor){
+      final data = snapshot.data() as Map<String, dynamic>;
+    Rating don = Rating(snapshot.id, org, donor, data['rating'], data['comment']);
     don.setDate(data['date'].toDate());
     return don;
-  }
+  }  
 
-  void setRating(double rating) {/*...*/}
-  void setComment(String comment) {/*...*/}
-  double getRating() {
-    /*...*/ return rating;
-  }
-
-  String getComment() {
-    /*...*/ return comment;
-  }
+  void setRating(double rating) { /*...*/ }
+  void setComment(String comment) { /*...*/ }
+  double getRating() { /*...*/ return rating; }
+  String getComment() { /*...*/ return comment; }
 
   @override
   Map<String, dynamic> toFirestore() {
     Map<String, dynamic> map = super.toFirestore();
-    map.addAll({
+    map.addAll({ 
       "type": "rating",
       "rating": rating,
       "comment": comment,
@@ -40,7 +34,7 @@ class Rating extends Interaction {
   }
 
   @override
-  String toString() {
+  String toString(){
     return "${super.toString()} \nRating: $rating\nComment: $comment";
   }
 }

@@ -1,5 +1,5 @@
 import 'package:donorlink/Database/database.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Organisation.dart';
 import 'package:donorlink/Models/Review.dart';
 import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/Models/User.dart';
@@ -16,7 +16,7 @@ class RevControls extends Database {
       (querySnapshot) async {
         for (var docSnapshot in querySnapshot.docs) {
           final data = docSnapshot.data();
-          Hospital org = await getUser(data['org']);
+          Organisation org = await getUser(data['org']);
           revs.add(Review.fromFirestore(docSnapshot, org, user as Reviewer));
         }
       },

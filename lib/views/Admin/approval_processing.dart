@@ -1,12 +1,12 @@
 import 'package:donorlink/Models/Admin.dart';
-import 'package:donorlink/Models/Hospital.dart';
+import 'package:donorlink/Models/Reviewer.dart';
 import 'package:donorlink/resources/loading_screen.dart';
 import 'package:donorlink/views/Admin/home_page.dart';
 import 'package:flutter/material.dart';
 
 class ApprovalProcessing extends LoadingScreen {
   final Admin admin;
-  final Hospital user;
+  final Reviewer user;
   final BuildContext context;
 
   const ApprovalProcessing(this.admin, this.user, this.context, {super.key});
@@ -16,10 +16,10 @@ class ApprovalProcessing extends LoadingScreen {
 
   @override
   Future<void> await() async {
-    var result = await admin.addHospital(user);
+    var result = await admin.approveReviewer(user);
     if (result) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Hospital Added')),
+        const SnackBar(content: Text('Reviewer Approved')),
       );
       Navigator.push(
         context,
